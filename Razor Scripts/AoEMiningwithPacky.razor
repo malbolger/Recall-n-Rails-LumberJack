@@ -1,0 +1,31 @@
+//JUST EQUIP A PICKAXE, FIND A MOUNTAIN, USE AFTER CAPTCHA CHECK...
+//
+//IN OPTION TAB TO LEFT CLICK ADD>
+//TARGET PACK ANIMAL>NAME IT Packie
+//WILL AUTO DROP ORE ON PACKIE WHEN
+// YOUR FULL
+//
+//DOES NOT CHECK IF PACKIE IS FULL
+//
+if findtype 'pickaxe' in RightHand
+    if insysmsg "You can't mine that"
+        stop
+    endif
+    //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+    if weight < 520
+    hotkey 'Use item in Hand'
+    waitfortarget 1000
+    target 'self'
+    pause 1000
+    replay
+    endif
+    //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+    if weight >= 520
+        overhead "[You have a full load]"
+        for 10
+            lifttype 'iron ore' 1000
+            drop 'Packie' -1 -1 0
+            pause 500
+       endfor
+    endif
+endif

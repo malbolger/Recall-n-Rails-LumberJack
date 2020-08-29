@@ -1,0 +1,13 @@
+if skill 'hiding' < 80.0 or skill 'stealth' == 100.0
+    skill 'hiding'
+    pause 11000
+    replay
+endif
+skill 'stealth'
+pause 1000
+if insysmsg 'You must hide first using the Hiding skill'
+    skill 'hiding'
+endif
+//Add 1000 per second to account for lag.
+pause 10000
+replay
