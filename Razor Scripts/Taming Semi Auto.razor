@@ -1,0 +1,104 @@
+hotkey 'Animal Taming'
+waitfortarget
+//TAMING SECTION BASED ON SKILL
+if skill 'Animal Taming' < 50.0
+    overhead 'You should train to 50 at a trainer'
+    overhead 'Then head on over to the Newb Dungeon'
+endif
+if skill 'Animal Taming' >= 50.0 and skill 'Animal Taming' <= 59.9
+    targettype 'a giant frog' true
+    //targettype 'a colossal frog' true
+endif
+if skill 'Animal Taming' >= 60.0  and skill 'Animal Taming' < 70.0
+    targettype 'a cave bear' true
+endif
+if skill 'Animal Taming' >= 70.0 and skill 'Animal Taming' < 72.5
+    targettype 'a scarab' true
+endif
+if skill 'Animal Taming' >= 72.5 and skill 'Animal taming' <= 74.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 75.0 and skill 'Animal Taming' < 77.5
+    targettype 'a drake whelp' true
+    //targettype 'an aegis slime' true
+endif
+if skill 'Animal Taming' >= 77.5 and skill 'Animal Taming' <= 79.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 80.0 and skill 'Animal Taming' < 82.5
+        overhead '3'
+    targettype 'a deep crawler' true
+endif
+if skill 'Animal Taming' >= 82.5 and skill 'Animal Taming' <= 84.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 85.0 and skill 'Animal Taming' < 87.5
+    targettype 'a drake' true
+endif
+if skill 'Animal Taming' >= 87.5 and skill 'Animal Taming' <= 89.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 90.0 and skill 'Animal Taming' < 92.5
+    targettype 'a husk crab' true
+endif
+if skill 'Animal Taming' >= 92.5 and skill 'Animal Taming' <= 94.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 95.0 and skill 'Animal Taming' < 97.5
+    targettype 'a dragon' true
+endif
+if skill 'Animal Taming' >= 97.5 and skill 'Animal Taming' <= 99.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 100.0 and skill 'Animal Taming' < 102.5
+    targettype 'a snowdrift' true
+endif
+if skill 'Animal Taming' >= 102.5 and skill 'Animal Taming' <= 104.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 105.0 and skill 'Animal Taming' < 107.5
+    targettype 'a acarid' true
+    //targettype 'an earth drake' true
+    //targettype 'an eldritch drake' true
+endif
+if skill 'Animal Taming' >= 107.5 and skill 'Animal Taming' <= 109.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 110.0 and skill 'Animal Taming' < 112.5 //CHOOSE WHICK
+    targettype 'a sphinx' true
+endif
+if skill 'Animal Taming' >= 112.5 and skill 'Animal Taming' <= 114.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' >= 115.0 and skill 'Animal Taming' < 117.5 //CHOOSE WHICK
+    targettype 'a snowdrift' true
+endif
+if skill 'Animal Taming' >= 117.5 and skill 'Animal Taming' <= 119.9
+    overhead 'Time to use passive points!'
+    break
+endif
+if skill 'Animal Taming' == 120.0
+    overhead 'CONGRATULATIONS!'
+    overhead 'You have already achieved 120 taming!'
+endif
+//SECTION TO HANDLE NOT FINDING TARGETS
+if insysmsg 'That is too far away."
+   pause 10000
+   replay
+   endif
+if insysmsg 'No item of type'
+   hotkey 'Cancel Current Target'
+   pause 10000
+replay
+endif
+pause 12000
+replay
