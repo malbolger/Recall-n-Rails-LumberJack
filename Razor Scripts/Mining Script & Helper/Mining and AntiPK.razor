@@ -1,0 +1,66 @@
+//FIND A MOUNTAIN, TURN ON TRACKING
+//
+//IN OPTION TAB TO LEFT CLICK ADD>
+//TARGET PACK ANIMAL>NAME IT "Packie"
+//WILL AUTO DROP ORE ON PACKIE WHEN
+// YOUR FULL
+//
+//DOES NOT CHECK IF PACKIE IS FULL
+//
+if rhandempty
+    if not findtype 'pickaxe' in backpack
+    overhead "::: You are out of pickaxes:::"
+    script "WaitAndWatch"
+    endif
+    if findtype 'pickaxe' in backpack
+        dclicktype 'pickaxe'
+        pause 500
+        overhead ":::equipped new pickaxe:::"
+    endif
+endif
+if insysmsg "Now tracking:"
+    overhead "::: RED FOUND L1:::"
+    overhead "::: RECALLING NOW L1:::"
+    cast "recall"
+    waitfortarget 3000
+    if findtype 'recall rune'
+        targettype 'recall rune'
+        overhead "::: Recalled Out :::"
+        script 'WaitAndWatch'
+    endif
+    if findtype 'Runebook'
+        targettype 'Runebook'
+        overhead "::: Recalled Out :::"
+        script 'WaitAndWatch'
+    endif
+endif
+if findtype 'pickaxe' in RightHand
+    //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+    if weight < 520
+    hotkey 'Use item in Hand'
+    waitfortarget 1000
+    target 'self'
+    pause 1000
+    if insysmsg "Now tracking:"
+        script 'WaitAndWatch'
+    endif
+    if insysmsg "You can't mine that"
+        script "WaitAndWatch"
+    endif
+    if not insysmsg "loosen some rocks" and not insysmsg "dig some"
+        overhead "::: GUMP UP :::"
+        script "WaitAndWatch"
+    endif
+    replay
+    endif
+    //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+    if weight >= 520
+        overhead "::: You have a full load :::"
+        for 10
+            lifttype 'iron ore' 1000
+            drop 'Packie' -1 -1 0
+            pause 500
+            script "WaitAndWatch"
+       endfor
+    endif
+endif

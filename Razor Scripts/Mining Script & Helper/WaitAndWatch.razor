@@ -1,0 +1,14 @@
+if insysmsg "Now tracking:"
+    overhead "::: RED FOUND :::"
+    overhead "::: RECALLING NOW :::"
+    cast "recall"
+    waitfortarget 3000
+    if findtype 'recall rune'
+        targettype 'recall rune'
+    endif
+    if findtype 'Runebook'
+        targettype 'Runebook'
+    endif
+    overhead "::: Recalled Out :::"
+endif
+replay
