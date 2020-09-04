@@ -113,12 +113,14 @@ pushlist ItemTypes 'bow' front
 pushlist ItemTypes 'crossbow' front
 pushlist ItemTypes 'heavy crossbow' front
 
+clearsysmsg
 skill 'ItemID'
 waitfortarget 1000
 
 overhead "::: Searching For Items :::"
 overhead "::: Please Be Patient :::"   
-overhead "::: This May Take Seconds :::"
+overhead "::: This May Take 10 Seconds :::"
+
 foreach x in ItemTypes
 if findtype x true
     targettype x true    
@@ -130,7 +132,7 @@ if findtype x true
             pause 1000
             replay
         endif
-        if insysmsg 'magical'
+        if insysmsg 'You identify the magical item.'
             overhead '::: Lifting :::'
             lift lasttarget 1
             //BACKPACK
@@ -147,11 +149,11 @@ if findtype x true
              replay
          endif
          if insysmsg 'appraise'
-            overhead 'lifting'
+             overhead '::: Lifting :::'
             lift lasttarget 1
             //BACKPACK
             pause 1000
-            overhead 'dropping'
+            overhead '::: Dropping :::'
             drop 'IDBag' -1 -1 0
             //drop 'IDbag' -1 -1 0
             pause 1000
