@@ -3,11 +3,11 @@ if insysmsg "Now tracking:"
     overhead "::: RECALLING NOW :::"
     cast "recall"
     waitfortarget 3000
-    if findtype 'recall rune'
-        targettype 'recall rune'
+    if findtype 'recall rune' in backpack
+        targettype 'recall rune' in backpack
     endif
-    if findtype 'Runebook'
-        targettype 'Runebook'
+    if findtype 'Runebook' in backpack
+        targettype 'Runebook' in backpack
     endif
     overhead "::: Recalled Out :::"
 endif
