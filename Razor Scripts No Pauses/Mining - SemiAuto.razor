@@ -1,0 +1,198 @@
+if not timerexists '_mining'
+    createtimer '_mining'
+    settimer '_mining' 99999
+endif
+if not timerexists '_sysmsg'
+    createtimer '_sysmsg'
+    settimer '_sysmsg' 99999
+endif
+if not timerexists '_checkweight'
+    createtimer '_checkweight'
+    settimer '_checkweight' 99999
+endif
+
+
+//Set timers initially to get into while loop.
+settimer '_mining' 0
+settimer '_sysmsg' 0
+settimer '_checkweight' 0
+
+while timer '_mining' < 4000
+    
+    //LOOK FOR PK
+    if insysmsg "Now tracking:"
+        overhead "::: RED FOUND :::" 55
+        overhead "::: RECALLING NOW :::" 33
+        cast "recall"
+        waitfortarget 3000
+        if findtype 'recall rune' true
+            targettype 'recall rune' true
+            overhead "::: Recalled Out :::" 15
+            script 'WaitAndWatch'
+        endif
+        if findtype 'Runebook' true
+            targettype 'Runebook' true
+            overhead "::: Recalled Out :::" 15
+            script 'WaitAndWatch'
+        endif
+    endif
+
+    //MINE
+    if timer '_mining' < 500
+        if rhandempty
+            if not findtype 'pickaxe' true
+                overhead "::: You are out of pickaxes:::"
+                script "WaitAndWatch"
+            endif
+            if findtype 'pickaxe' true
+                dclicktype 'pickaxe'
+                overhead ":::equipped new pickaxe:::"
+            endif
+        endif    
+        if findtype 'pickaxe' true
+            //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+        if weight < 545
+                hotkey 'Use item in Hand'
+                waitfortarget 1000
+                target 'self'
+            endif
+            //LOOK FOR PK AGAIN INCASE SYSMSG OVERWRITTEN
+            if insysmsg "Now tracking:"
+                overhead "::: RED FOUND :::" 55
+                overhead "::: RECALLING NOW :::" 33
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' true
+                    targettype 'recall rune' true
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' true
+                    targettype 'Runebook' true
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+            endif
+        endif
+    endif
+   
+    //HANDLE RESULTS
+    if insysmsg "You can't mine that"
+        overhead '::: node empty :::'
+        script "WaitAndWatch"
+    endif
+    //SET THIS NUMBER TO 10 LESS THAN YOUR MAX WEIGHT
+    if weight >= 545
+        if timer '_checkweight' < 1000
+            overhead "::: You have a full load :::" 15
+            overhead "::: Lifting Ore :::" 55
+            lifttype 'iron ore' 1000
+            overhead "::: Dropping on 'Packie' :::" 33
+            drop 'Packie' -1 -1 0
+            settimer '_checkweight' 1000
+            settimer '_sysmsg' 0
+            settimer '_mining' 0
+        endif
+        if timer '_checkweight' > 2000
+            if weight >= 545
+                overhead "::: NO PACKIE FOUND :::" 55
+                overhead "::: RECALLING NOW :::" 33
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' true
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::"
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' true
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::"
+                    script 'WaitAndWatch'
+                endif
+            endif
+        endif
+    endif
+
+    if insysmsg 'shadow'
+        overhead '::: shadow :::' 193
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg 
+    elseif insysmsg 'dull copper'
+        overhead '::: dull copper :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg 
+    elseif insysmsg 'iron'
+        overhead '::: iron :::' 15
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'copper'
+        overhead '::: copper :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'bronze'
+        overhead '::: bronze :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'gold'
+        overhead '::: gold :::' 55
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'agapite'
+        overhead '::: agapite :::' 55
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'verite'
+        overhead '::: verite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'valorite'
+        overhead '::: valorite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    elseif insysmsg 'avarite'
+        overhead '::: avarite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        //clearsysmsg
+    endif
+
+    if insysmsg "You loosen"
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        overhead '::: loosened :::'
+        //clearsysmsg 
+    endif
+
+    if insysmsg 'recently traveled'
+        overhead '::: recently traveled :::'
+        settimer '_sysmsg' 0
+        script 'WaitAndWatch'
+    endif
+    
+    if timer '_sysmsg' > 2000
+        overhead "::: GUMP or LAG :::" 33
+        overhead "::: Restart Script :::" 55
+        script "WaitAndWatch"
+    endif
+
+endwhile

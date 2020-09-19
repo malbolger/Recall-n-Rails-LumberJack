@@ -1,0 +1,24 @@
+if insysmsg "Now tracking:"
+    overhead "::: RED FOUND :::"
+    overhead "::: RECALLING NOW :::"
+    cast "recall"
+    waitfortarget 3000
+    if findtype 'recall rune'
+        targettype 'recall rune' true
+    endif
+    if findtype 'Runebook'
+        targettype 'Runebook' true
+    endif
+    overhead "::: Recalled Out :::"
+endif
+
+//REEQUIP SO THEIVES CANT STEAL YOUR TOOLS
+//SET TO YOUR TOOL
+//OR COMMENT SECTION OUT
+
+if rhandempty
+    //dclicktype 'hatchet'
+    dclicktype 'pickaxe'
+endif
+clearsysmsg 
+replay
