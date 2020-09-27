@@ -15,7 +15,7 @@ while timer '_lumberjacking' < 10000
 if timer '_lumberjacking' < 500
     if lhandempty
     if not findtype 'hatchet' true
-            overhead "::: You are out of pickaxes:::"
+            overhead "::: You are out of hatchets:::"
             script "WaitAndWatch"
         endif
         if findtype 'hatchet' true
@@ -61,7 +61,7 @@ if weight >= 520
     if findtype 'Packie' true
         for 10
         overhead "::: Picking Up Ore :::" 55
-        lifttype 'iron ore' 1000
+        lifttype 'logs' 1000
         overhead "::: Dropping on 'Packie' :::" 33
         drop 'Packie' -1 -1 0
         pause 1000
