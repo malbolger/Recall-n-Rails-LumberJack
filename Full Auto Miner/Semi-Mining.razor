@@ -1,0 +1,957 @@
+# Semi Auto Mining by Xyio
+
+# 1. Create organizer 17(default) to move iron ore to your pack animal
+#     or change 'organizer 17' in the script to another number (not suggested)
+#     set your organizer's hotbag as your pack animal
+
+# 2. The companion script 'WatchAndWait' must accompany this if you would like PK avoidance
+#     while your miner is not swinging.
+# 3. The companion script 'ResetRails' is required anytime you need to reset the script to the begining.
+#
+#
+# 4. Will look for a rune in your backpack and then a Runebook
+#     Set the default location to a safe place to recall your
+#     miner to when full or detected a red.
+
+# This script does not use pauses or waits.
+# It uses a series of timers to gain very fast PK detection.
+# 
+#----USE RAILS?--- 0 if off, 1 is on
+setvar useRails 1
+#
+#
+#---- CHECKS TO SEE IF 'firstRun" list exists ----
+# if the list exists it coninues on with the old rail position
+# and packy dump sequence. If you delete the first run list
+# the script will reset your rail, your packy sequence and your system messages.
+#
+#
+
+if not listexists 'firstRun'
+    createlist 'firstRun'
+    clearsysmsg 
+    removelist  moveList
+    setvar packyDumps 0
+    setvar lastDirection 0
+    setvar minedOre 0
+endif
+
+#---- Script that will reset it for you ----
+# if listexists firstRun
+#   clearlist firstRun
+# endif
+
+# ----PASTE RAIL MOVEMENTS AFTER "BEGINING OF RAIL" ----
+#
+#------------------------------------
+if useRails == 1
+    if not listexists moveList
+        createlist moveList
+# ---- BEGINING OF RAIL----
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '8'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '7'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '4'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '2'
+        pushlist moveList '2'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '1'
+        pushlist moveList '1'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '4'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '3'
+        pushlist moveList '3'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '6'
+        pushlist moveList '6'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+        pushlist moveList '5'
+# ---- END OF RAIL----
+    endif
+endif
+
+if not timerexists '_mining'
+    createtimer '_mining'
+    settimer '_mining' 99999
+endif
+if not timerexists '_sysmsg'
+    createtimer '_sysmsg'
+    settimer '_sysmsg' 99999
+endif
+if not timerexists '_checkweight'
+    createtimer '_checkweight'
+    settimer '_checkweight' 99999
+endif
+if not varexist packyDumps
+    setvar packyDumps 0
+endif
+
+#Set timers initially to get into while loop.
+settimer '_mining' 0
+settimer '_sysmsg' 0
+settimer '_checkweight' 0
+
+while timer '_mining' < 4000    
+    if diffweight <= 40
+        if timer '_checkweight' < 1000
+            overhead "::: You have a full load :::" 15
+            overhead "::: Running Organizer :::" 55
+                if packyDumps == 4
+                    overhead "::: Packy Full Recalling Instead :::" 33     
+                    setvar packyDumps 0
+                    cast "recall"
+                    waitfortarget 3000
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
+                    if findtype 'Runebook' true
+                        targettype 'Runebook' true
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
+                endif
+                if packyDumps == 3
+                    overhead "::: Fourth Dump on pack animal :::" 33
+                    organizer 17
+                    setvar packyDumps 4
+                endif
+                if packyDumps == 2
+                    overhead "::: Third Dump on pack animal :::" 33
+                    organizer 17
+                    setvar packyDumps 3
+                endif
+                if packyDumps == 1
+                    overhead "::: Second Dump on pack animal :::" 33
+                    organizer 17
+                    setvar packyDumps 2
+                endif
+                if packyDumps == 0
+                    overhead "::: First Dump on pack animal :::" 33
+                    organizer 17
+                    setvar packyDumps 1
+                endif
+            endif
+            settimer '_checkweight' 1000
+            settimer '_sysmsg' 0
+            settimer '_mining' 0
+        endif
+        if timer '_checkweight' > 2000
+            if diffweight <= 40
+                overhead "::: NO PACKIE FOUND :::" 55
+                overhead "::: RECALLING NOW :::" 33
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' true
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::"
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' true
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::"
+                    script 'WaitAndWatch'
+                endif
+            endif
+        endif
+    endif
+    #LOOK FOR PK
+    if insysmsg "Now tracking:"
+        overhead "::: RED FOUND :::" 55
+        overhead "::: RECALLING NOW :::" 33
+        cast "recall"
+        waitfortarget 3000
+        if findtype 'recall rune' backpack
+            targettype 'recall rune' backpack
+            overhead "::: Recalled Out :::" 15
+            script 'WaitAndWatch'
+        endif
+        if findtype 'Runebook' backpack
+            targettype 'Runebook' backpack
+            overhead "::: Recalled Out :::" 15
+            script 'WaitAndWatch'
+        endif
+    endif
+
+    #MINE
+    if timer '_mining' < 500
+        if rhandempty
+            if not findtype 3718 backpack
+                overhead "::: You are out of pickaxes:::"
+                script "WaitAndWatch"
+            endif
+            if findtype 3718 backpack as pickaxe
+                dclick 'pickaxe'
+                overhead ":::equipped new pickaxe:::"
+                settimer '_mining' 0
+                settimer '_sysmsg' 0
+                wait 1000 #DANGEROUS REMOVE WAIT
+            endif
+        endif    
+        if findtype 'pickaxe' true
+            #overhead "Found a PICK"
+            if diffweight >= 40
+                #overhead "USING PICK"
+                hotkey 'Use item in Hand'
+                waitfortarget 1000 
+                target 'self'
+            endif
+            //LOOK FOR PK AGAIN INCASE SYSMSG OVERWRITTEN
+            if insysmsg "Now tracking:"
+                overhead "::: RED FOUND :::" 55
+                overhead "::: RECALLING NOW :::" 33
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+            endif
+        endif
+    endif
+    #HANDLE RESULTS
+    if insysmsg "You can't mine that"
+        overhead '::: node empty :::'
+        script "WaitAndWatch"
+    endif
+    
+    if insysmsg "You do not see any harvestable resources nearby"
+        overhead "::: node empty :::"
+        if useRails == 1
+            overhead '::: moving :::' 55
+            for 4
+            if atlist moveList 0 as firstEntry
+                overhead firstEntry
+
+                    if firstEntry == 8
+                        walk 'up'
+                        if minedOre == 1
+                            walk 'up'
+                        setvar minedOre 0
+                        endif
+                        poplist moveList front
+                        #setvar lastDirection 8
+                    endif
+                    if firstEntry == 1
+                        walk 'north'
+                        if minedOre == 1
+                            walk 'north'
+                        setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 2
+                        walk 'right'
+                        if minedOre == 1
+                            walk 'right'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 3
+                        walk 'east'
+                        if minedOre == 1
+                            walk 'east'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 4
+                        walk 'down'
+                        if minedOre == 1
+                            walk 'down'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 5
+                        walk 'south'
+                        if minedOre == 1
+                            walk 'south'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 6
+                        walk 'left'
+                        if minedOre == 1
+                            walk 'left'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+                    if firstEntry == 7
+                        walk 'west'
+                        if minedOre == 1
+                            walk 'west'
+                            setvar minedOre 0
+                        endif
+                        poplist moveList front
+                    endif
+            else
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+            endif
+            endfor
+            #poplist moveList front
+            settimer '_sysmsg' 0
+            settimer '_mining' 0
+            settimer '_checkweight' 0
+        else
+            script "WaitAndWatch"
+        endif
+    endif 
+
+    
+    if insysmsg 'shadow'
+        overhead '::: shadow :::' 193
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'dull copper'
+        overhead '::: dull copper :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'iron'
+        overhead '::: iron :::' 15
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'copper'
+        overhead '::: copper :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'bronze'
+        overhead '::: bronze :::' 248
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'gold'
+        overhead '::: gold :::' 55
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'agapite'
+        overhead '::: agapite :::' 55
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'verite'
+        overhead '::: verite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'valorite'
+        overhead '::: valorite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    elseif insysmsg 'avarite'
+        overhead '::: avarite :::' 33
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        setvar minedOre 1
+    endif
+
+    if insysmsg "You loosen"
+        settimer '_mining' 0
+        settimer '_sysmsg' 0
+        settimer '_checkweight' 0
+        overhead '::: loosened :::'
+        setvar minedOre 1
+    endif
+
+    if insysmsg 'recently traveled'
+        overhead '::: recently traveled :::'
+        settimer '_sysmsg' 0
+        script 'WaitAndWatch'
+    endif
+    
+    if insysmsg 'Organize Agent queued'
+        overhead '::: Organizer Working :::' 55
+        wait 2000 #DANGEROUS WAIT
+        settimer '_sysmsg' 0
+        settimer '_mining' 0
+    endif
+    
+    if insysmsg 'World is saving, please wait'
+        overhead '::: Waiting for Save :::'
+        for 3
+            wait 1000
+            settimer '_sysmsg' 0
+            settimer '_mining' 0
+            settimer 'checkweight' 0
+        endfor
+    endif
+    
+    if insysmsg 'Harvesting is not allowed in this area'
+        overhead '::: You cannot gather in town :::'
+        settimer '_sysmsg' 0
+        settimer '_mining' 0
+        #settimer '_checkweight' 0
+    endif 
+    
+    if timer '_sysmsg' > 3000
+        overhead "::: GUMP or LAG :::" 33
+        overhead "::: Restart Script :::" 55
+        script "WaitAndWatch"
+    endif
+endwhile
