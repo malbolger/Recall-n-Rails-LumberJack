@@ -1,36 +1,86 @@
-#Auto Miner by Xyio
+#Auto Lumberjack by Xyio
 
 # 1. Create organizer 17(default) to move resources to your pack animal
 #     or change 'organizer 17' in the script to another number (not suggested)
 #     set your organizer's hotbag as your pack animal
-
+#
 # 2. The companion script 'WatchAndWait' must accompany this if you would like PK avoidance
 #     while your harvester is not swinging.
-# 3. The companion script 'ResetRails' is required anytime you need to reset the script to the begining.
 #
+# 3. The companion script 'ResetRails' is required anytime you need to reset the script to the begining.
 #
 # 4. Will look for a rune in your backpack and then a Runebook
 #     Set the default location to a safe place to recall your
 #     miner to when full or detected a red.
 #
 #
-# This script does not use pauses or waits.
+# This script uses very few pauses or waits.
 # It uses a series of timers to gain very fast PK detection.
+#
 # 
-#----USE RAILS?--- 0 if off, 1 is on
+# <><><><><><><><><><><><><><><><><><><><><>
+# ******************************************
+# //--------------------------------------//
+# //----PASTE RAILS FILE CONTENTS HERE----//
+
+
+
+# //-------END RAILS FILE CONTENTS -------//
+# //--------------------------------------//
+#*******************************************
+# <><><><><><><><><><><><><><><><><><><><><>
+#
+# ----CONFIG BELOW----
+#----USE RAILS?--- (0 if off, 1 is on)
 setvar useRails 1
 #
 #
-# Max time before your script times out.
-setvar harvestTimeout 6000
+# Should we attempt to defend ourselves from monsters?
+setvar useCombatDefense 1
 #
 #
-#Gump or Lag timout
-setvar gumpOrLagTimeout 7000
+# Healing method ( 1 for bandages, 2 for magery)
+setvar healingMethod 2
 #
 #
-#Max time before you swing
+# How long it takes you to apply a bandaid (this will be based on your dex)
+setvar bandageTime 12000
+#
+#
+# How long before you can use Magery healing again (should be no less than Gheal cast time)
+setvar mageryHealTime 3000
+#
+#
+# Delay before movment attempts
+setvar movementDelay 250
+#
+#
+# Variable to make our location
+# persist across errors 
+setvar xListEntry 0
+setvar yListEntry 0
+#
+#
+# See Debugging Messages overhead?
+setvar debugScript 0
+#
+#
+# Max time without a system message before the script
+# considers it a timeout. (default 6000)
+setvar harvestTimeout 7000
+#
+#
+# Max length of time before the script considers 
+# heavy lag or a captcha is up. (default 7000)
+setvar gumpOrLagTimeout 6000
+#
+#
+# Max time before your tool swing is considered
+# timed out. (default 500)
 setvar swingTimeout 500
+#
+# Use Scrolls for recall? ( 1 = yes, 0 = no)
+setvar useScrolls 0
 #
 #
 #---- CHECKS TO SEE IF 'firstRun" list exists ----
@@ -42,31 +92,14 @@ setvar swingTimeout 500
 
 if not listexists 'firstRun'
     createlist 'firstRun'
-    clearsysmsg 
-    removelist  moveList
+    clearsysmsg
     setvar packyDumps 0
     setvar lastDirection 0
     setvar choppedWood 0
+    setvar previousDirection 0
 endif
 
-#---- Script that will reset it for you ----
-# if listexists firstRun
-#   clearlist firstRun
-# endif
-
-# ----PASTE RAIL MOVEMENTS AFTER "BEGINING OF RAIL" ----
-#
-#------------------------------------
-if useRails == 1
-    if not listexists moveList
-        createlist moveList
-
-# ---- BEGINING OF RAIL----
-
-
-# ---- END OF RAIL----
-    endif
-endif
+#----------------DO NOT EDIT BELOW THIS LINE-----------------------
 
 if not timerexists '_harvest'
     createtimer '_harvest'
@@ -80,6 +113,14 @@ if not timerexists '_checkweight'
     createtimer '_checkweight'
     settimer '_checkweight' 99999
 endif
+if not timerexists '_healbandaid'
+    createtimer '_healbandaid'
+    settimer '_healbandaid' 99999
+endif
+if not timerexists '_healmagery'
+    createtimer '_healmagery'
+    settimer '_healmagery' 99999
+endif
 if not varexist packyDumps
     setvar packyDumps 0
 endif
@@ -89,7 +130,28 @@ settimer '_harvest' 0
 settimer '_sysmsg' 0
 settimer '_checkweight' 0
 
-while timer '_harvest' < harvestTimeout    
+while timer '_harvest' < harvestTimeout
+    if useCombatDefense == 1
+        #use Bandaids
+        if healingMethod == 1
+            if diffhits > 1
+                if timer '_healbandaid' < bandageTime
+                    #TODO: FINDTYPE FOR BANDAIDS
+                    hotkey 'Bandage Self'
+                    settimer '_healbandaid' 0
+                endif
+            endif
+        endif
+        #use Magery
+        if healingMethod == 2
+            if diffhits > 15
+                if timer '_healmagery' < mageryHealTime
+                hotkey 'Smart Heal/Cure Self'
+                settimer '_healmagery' 0
+            endif
+        endif
+        #TODO USE DESIRED COMBAT ROTATION
+    endif
     if diffweight <= 40
         if timer '_checkweight' < 1000
             overhead "::: You have a full load :::" 15
@@ -177,6 +239,18 @@ while timer '_harvest' < harvestTimeout
         if lhandempty
         if not findtype 3908 backpack
                 overhead "::: You are out of tools:::"
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
                 script "WaitAndWatch"
             endif
             if findtype 3908 backpack as tool
@@ -190,6 +264,7 @@ while timer '_harvest' < harvestTimeout
             if findtype 3908 true
                 #overhead "Found a TOOL"
             if diffweight >= 40
+                wait 150
                 #overhead "USING TOOL"
                 hotkey 'Use item in Hand'
                 waitfortarget 1000 
@@ -225,93 +300,86 @@ while timer '_harvest' < harvestTimeout
         overhead "::: node empty :::"
         if useRails == 1
             overhead '::: moving :::' 55
-            for 12
-            if atlist moveList 0 as firstEntry
-                #overhead firstEntry
-                    if firstEntry == 8
-                        walk 'up'
-                        if choppedWood == 1
-                            walk 'up'
-                        setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                        #setvar lastDirection 8
-                    endif
-                    if firstEntry == 1
-                        walk 'north'
-                        if choppedWood == 1
-                            walk 'north'
-                        setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 2
-                        walk 'right'
-                        if choppedWood == 1
-                            walk 'right'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 3
-                        walk 'east'
-                        if choppedWood == 1
-                            walk 'east'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 4
-                        walk 'down'
-                        if choppedWood == 1
-                            walk 'down'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 5
-                        walk 'south'
-                        if choppedWood == 1
-                            walk 'south'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 6
-                        walk 'left'
-                        if choppedWood == 1
-                            walk 'left'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 7
-                        walk 'west'
-                        if choppedWood == 1
-                            walk 'west'
-                            setvar choppedWood 0
-                        endif
-                        poplist moveList front
-                    endif
-            else
-                cast "recall"
-                waitfortarget 3000
-                if findtype 'recall rune' backpack
-                    targettype 'recall rune' backpack
-                    overhead "::: Recalled Out :::" 15
-                    script 'WaitAndWatch'
-                endif
-                if findtype 'Runebook' backpack
-                    targettype 'Runebook' backpack
-                    overhead "::: Recalled Out :::" 15
-                    script 'WaitAndWatch'
+        for 12
+        if atlist xCoord 0 as x
+            setvar xListEntry x
+        endif
+        if atlist yCoord 0 as y
+            setvar yListEntry y
+        endif       
+        if position xListEntry yListEntry              
+            overhead 'at location'
+            if atlist moveList 0 as t
+                if t > 0               
+                    poplist moveList 'front'
+                    poplist xCoord 'front'
+                    poplist yCoord 'front'
                 endif
             endif
-            endfor
-            #poplist moveList front
+            #wait movementDelay
+            else            
+                if atlist moveList 0 as firstEntry
+                    #overhead xListEntry
+                    #overhead yListEntry
+                    if firstEntry == 1
+                        overhead '::: moving north :::' 55
+                        walk 'north'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 2
+                        overhead '::: moving right :::' 55
+                        walk 'right'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 3
+                        overhead '::: moving east :::' 55
+                        walk 'east'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 4
+                        overhead '::: moving down :::' 55
+                        walk 'down'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 5
+                        overhead '::: moving south :::' 55
+                        walk 'south'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 6
+                        overhead '::: moving left :::' 55
+                        walk 'left'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 7
+                        overhead '::: moving west :::' 55
+                        walk 'west'
+                        wait movementDelay
+                    endif
+                    if firstEntry == 8
+                        overhead '::: moving up :::' 55
+                        walk 'up'
+                        wait movementDelay
+                    endif
+                 else
+                    cast "recall"
+                    waitfortarget 3000
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
+                    if findtype 'Runebook' backpack
+                        targettype 'Runebook' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
+                endif
+            endif
             settimer '_sysmsg' 0
             settimer '_harvest' 0
             settimer '_checkweight' 0
+            endfor
         else
             script "WaitAndWatch"
         endif
@@ -325,55 +393,55 @@ while timer '_harvest' < harvestTimeout
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Shadowwood'
+    elseif insysmsg 'Shadowwood'
         overhead '::: shadowwood :::' 15
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Copperwood'
+    elseif insysmsg 'Copperwood'
         overhead '::: copperwood :::' 248
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Bronzewood'
+    elseif insysmsg 'Bronzewood'
         overhead '::: bronzewood :::' 248
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Goldenwood'
-            overhead '::: goldenwood :::' 55
+    elseif insysmsg 'Goldenwood'
+        overhead '::: goldenwood :::' 55
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Rosewood'
-            overhead '::: rosewood :::' 55
+    elseif insysmsg 'Rosewood'
+        overhead '::: rosewood :::' 55
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Verewood'
-            overhead '::: verewood :::' 33
+    elseif insysmsg 'Verewood'
+        overhead '::: verewood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Valewood'
+    elseif insysmsg 'Valewood'
         overhead '::: valewood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'Avarwood'
+    elseif insysmsg 'Avarwood'
         overhead '::: avarwood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         setvar choppedWood 1
-        elseif insysmsg 'logs'
+    elseif insysmsg 'logs'
         overhead '::: logs :::' 193
         settimer '_harvest' 0
         settimer '_sysmsg' 0
@@ -418,7 +486,15 @@ while timer '_harvest' < harvestTimeout
         settimer '_sysmsg' 0
         settimer '_harvest' 0
         #settimer '_checkweight' 0
-    endif 
+    endif
+    
+    if insysmsg 'You broke your axe'
+        overhead '::: Your axe is broken :::'
+        settimer '_sysmsg' 0
+        settimer '_harvest' 0
+        settimer '_checkweight' 0
+    endif
+    
     
     if timer '_sysmsg' > gumpOrLagTimeout
         overhead "::: GUMP or LAG :::" 33
