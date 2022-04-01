@@ -24,7 +24,6 @@
 # //----PASTE RAILS FILE CONTENTS HERE----//
 
 
-
 # //-------END RAILS FILE CONTENTS -------//
 # //--------------------------------------//
 #*******************************************
@@ -66,13 +65,13 @@ setvar debugScript 0
 #
 #
 # Max time without a system message before the script
-# considers it a timeout. (default 6000)
-setvar harvestTimeout 7000
+# considers it a timeout. (default 13000)
+setvar harvestTimeout 13000
 #
 #
 # Max length of time before the script considers 
-# heavy lag or a captcha is up. (default 7000)
-setvar gumpOrLagTimeout 6000
+# heavy lag or a captcha is up. (default 12000)
+setvar gumpOrLagTimeout 12000
 #
 #
 # Max time before your tool swing is considered
@@ -269,8 +268,9 @@ while timer '_harvest' < harvestTimeout
                 hotkey 'Use item in Hand'
                 waitfortarget 1000 
                 target 'self'
+                wait 250
             endif
-            //LOOK FOR PK AGAIN INCASE SYSMSG OVERWRITTEN
+            #LOOK FOR PK AGAIN INCASE SYSMSG OVERWRITTEN
             if insysmsg "Now tracking:"
                 overhead "::: RED FOUND :::" 55
                 overhead "::: RECALLING NOW :::" 33
@@ -296,27 +296,38 @@ while timer '_harvest' < harvestTimeout
         script "WaitAndWatch"
     endif
     
-    if insysmsg "You do not see any"
-        overhead "::: node empty :::"
-        if useRails == 1
-            overhead '::: moving :::' 55
+if insysmsg "You do not see any"
+    overhead "::: node empty :::"
+    if useRails == 1
+        #overhead '::: moving :::' 55
         for 12
-        if atlist xCoord 0 as x
-            setvar xListEntry x
-        endif
-        if atlist yCoord 0 as y
-            setvar yListEntry y
-        endif       
-        if position xListEntry yListEntry              
-            overhead 'at location'
-            if atlist moveList 0 as t
-                if t > 0               
+            if atlist xCoord 0 as x
+                setvar xListEntry x
+            endif
+            if atlist yCoord 0 as y
+                setvar yListEntry y
+            endif       
+            if position xListEntry yListEntry              
+                overhead 'at location'                                   
+                if list moveList > 0             
                     poplist moveList 'front'
                     poplist xCoord 'front'
                     poplist yCoord 'front'
+                else
+                    overhead "::: Back to town rail completed :::"
+                    cast "recall"
+                    waitfortarget 3000
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
+                    if findtype 'Runebook' backpack
+                        targettype 'Runebook' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'WaitAndWatch'
+                    endif
                 endif
-            endif
-            #wait movementDelay
             else            
                 if atlist moveList 0 as firstEntry
                     #overhead xListEntry
@@ -361,30 +372,16 @@ while timer '_harvest' < harvestTimeout
                         walk 'up'
                         wait movementDelay
                     endif
-                 else
-                    cast "recall"
-                    waitfortarget 3000
-                    if findtype 'recall rune' backpack
-                        targettype 'recall rune' backpack
-                        overhead "::: Recalled Out :::" 15
-                        script 'WaitAndWatch'
-                    endif
-                    if findtype 'Runebook' backpack
-                        targettype 'Runebook' backpack
-                        overhead "::: Recalled Out :::" 15
-                        script 'WaitAndWatch'
-                    endif
                 endif
             endif
             settimer '_sysmsg' 0
             settimer '_harvest' 0
             settimer '_checkweight' 0
-            endfor
-        else
-            script "WaitAndWatch"
-        endif
-    endif 
-
+        endfor
+    else
+        script "WaitAndWatch"
+    endif
+endif 
     
 
     if insysmsg 'Dullwood'
@@ -392,61 +389,51 @@ while timer '_harvest' < harvestTimeout
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Shadowwood'
         overhead '::: shadowwood :::' 15
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Copperwood'
         overhead '::: copperwood :::' 248
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Bronzewood'
         overhead '::: bronzewood :::' 248
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Goldenwood'
         overhead '::: goldenwood :::' 55
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Rosewood'
         overhead '::: rosewood :::' 55
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Verewood'
         overhead '::: verewood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Valewood'
         overhead '::: valewood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'Avarwood'
         overhead '::: avarwood :::' 33
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     elseif insysmsg 'logs'
         overhead '::: logs :::' 193
         settimer '_harvest' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar choppedWood 1
     endif
     
     #overhead "Hack"
@@ -455,7 +442,6 @@ while timer '_harvest' < harvestTimeout
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         overhead '::: hacked :::'
-        setvar choppedWood 1
     endif
 
     if insysmsg 'recently traveled'
@@ -473,7 +459,7 @@ while timer '_harvest' < harvestTimeout
     
     if insysmsg 'World is saving, please wait'
         overhead '::: Waiting for Save :::'
-        for 3
+        for 4
             wait 1000
             settimer '_sysmsg' 0
             settimer '_harvest' 0
@@ -489,7 +475,32 @@ while timer '_harvest' < harvestTimeout
     endif
     
     if insysmsg 'You broke your axe'
-        overhead '::: Your axe is broken :::'
+        overhead '::: Your axe is broken :::' 33
+        if lhandempty
+        if not findtype 3908 backpack
+                overhead "::: You are out of tools:::"
+                cast "recall"
+                waitfortarget 3000
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'WaitAndWatch'
+                endif
+                script "WaitAndWatch"
+            endif
+            if findtype 3908 backpack as tool
+                dclick 'tool'
+                overhead ":::equipped new tool:::"
+                settimer '_harvest' 0
+                settimer '_sysmsg' 0
+                wait 1000
+            endif
+        endif
         settimer '_sysmsg' 0
         settimer '_harvest' 0
         settimer '_checkweight' 0
@@ -498,7 +509,7 @@ while timer '_harvest' < harvestTimeout
     
     if timer '_sysmsg' > gumpOrLagTimeout
         overhead "::: GUMP or LAG :::" 33
-        overhead "::: Restart Script :::" 55
+        overhead "::: Replay Script :::" 55
         script "WaitAndWatch"
     endif
 endwhile
