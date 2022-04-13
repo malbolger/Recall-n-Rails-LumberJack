@@ -1,76 +1,77 @@
-# Full Auto Mining by Xyio
+#Auto Miner by Xyio
 
 # 1. Create organizer 17(default) to move iron ore to your pack animal
 #     or change 'organizer 17' in the script to another number (not suggested)
 #     set your organizer's hotbag as your pack animal
-
+#
 # 2. The companion script 'WatchAndWait' must accompany this if you would like PK avoidance
 #     while your miner is not swinging.
 # 3. The companion script 'ResetRails' is required anytime you need to reset the script to the begining.
 #
-#
 # 4. Will look for a rune in your backpack and then a Runebook
 #     Set the default location to a safe place to recall your
 #     miner to when full or detected a red.
-
-# This script does not use pauses or waits.
+#
+# This script uses minimal pauses and waits.
 # It uses a series of timers to gain very fast PK detection.
-# 
+#
+# <><><><><><><><><><><><><><><><><><><><><>
+# ******************************************
+# //--------------------------------------//
+# //----PASTE RAILS FILE CONTENTS HERE----//
+
+
+# //-------END RAILS FILE CONTENTS -------//
+# //--------------------------------------//
+#*******************************************
+# <><><><><><><><><><><><><><><><><><><><><>
+ 
 #----USE RAILS?--- 0 if off, 1 is on
 setvar useRails 1
 #
 #
-#---- CHECKS TO SEE IF 'firstRun" list exists ----
-# if the list exists it coninues on with the old rail position
-# and packy dump sequence. If you delete the first run list
-# the script will reset your rail, your packy sequence and your system messages.
+# Delay before movment attempts
+setvar movementDelay 250
 #
 #
-
+# Variables to make our location persist.
+setvar xListEntry 0
+setvar yListEntry 0
+#
+#
+# Max time without a system message before the script
+# considers it a timeout. (default 13000)
+setvar harvestTimeout 13000
+#
+#
+# Max length of time before the script considers 
+# heavy lag or a captcha is up. (default 12000)
+setvar gumpOrLagTimeout 12000
+#
+#
+# Max time before your tool swing is considered
+# timed out. (default 500)
+setvar swingTimeout 500
+#
 if not listexists 'firstRun'
     createlist 'firstRun'
-    clearsysmsg 
-    removelist  moveList
+    clearsysmsg
+    createlist moveList
+    createlist xCoord
+    createlist yCoord
     setvar packyDumps 0
-    setvar lastDirection 0
-    setvar minedOre 0
 endif
-
-#---- Script that will reset it for you ----
-# if listexists firstRun
-#   clearlist firstRun
-# endif
-
-# ----PASTE RAIL MOVEMENTS AFTER "BEGINING OF RAIL" ----
+# Below is a script that will reset the scripts state
+# You will need to do this anytime you want to restart a run
 #
-#------------------------------------
-if useRails == 1
-    if not listexists moveList
-        createlist moveList
-# ---- BEGINING OF RAIL----      
-        pushlist moveList '6'
-        pushlist moveList '6'
-        pushlist moveList '6'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '6'
-        pushlist moveList '6'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-        pushlist moveList '5'
-# ---- END OF RAIL----
-    endif
-endif
-
+# if listexists firstRun
+#   removelist firstRun
+#   removelist moveList
+#   removelist xCoord
+#   removelist yCoord
+#   overhead "::: script has been reset :::" 77
+# endif
+#
 if not timerexists '_mining'
     createtimer '_mining'
     settimer '_mining' 99999
@@ -92,7 +93,7 @@ settimer '_mining' 0
 settimer '_sysmsg' 0
 settimer '_checkweight' 0
 
-while timer '_mining' < 4000    
+while timer '_mining' < harvestTimeout   
     if diffweight <= 40
         if timer '_checkweight' < 1000
             overhead "::: You have a full load :::" 15
@@ -176,7 +177,7 @@ while timer '_mining' < 4000
     endif
 
     #MINE
-    if timer '_mining' < 500
+    if timer '_mining' < swingTimeout
         if rhandempty
             if not findtype 3718 backpack
                 overhead "::: You are out of pickaxes:::"
@@ -217,104 +218,96 @@ while timer '_mining' < 4000
             endif
         endif
     endif
+    
+    
     #HANDLE RESULTS
     if insysmsg "You can't mine that"
         overhead '::: node empty :::'
         script "WaitAndWatch"
     endif
     
-    if insysmsg "You do not see any harvestable resources nearby"
+    if insysmsg "You do not see any"
         overhead "::: node empty :::"
         if useRails == 1
-            overhead '::: moving :::' 55
-            for 4
-            if atlist moveList 0 as firstEntry
-                overhead firstEntry
-
-                    if firstEntry == 8
-                        walk 'up'
-                        if minedOre == 1
-                            walk 'up'
-                        setvar minedOre 0
+            #overhead '::: moving :::' 55
+            for 12
+                if atlist xCoord 0 as x
+                    setvar! xListEntry x
+                endif
+                if atlist yCoord 0 as y
+                    setvar! yListEntry y
+                endif       
+                if position xListEntry yListEntry              
+                    overhead 'at location'                                   
+                    if list moveList > 0             
+                        poplist moveList 'front'
+                        poplist xCoord 'front'
+                        poplist yCoord 'front'
+                    else
+                        overhead "::: Back to town rail completed :::"
+                        cast "recall"
+                        waitfortarget 3000
+                        if findtype 'recall rune' backpack
+                            targettype 'recall rune' backpack
+                            overhead "::: Recalled Out :::" 15
+                            script 'WaitAndWatch'
                         endif
-                        poplist moveList front
-                        #setvar lastDirection 8
+                        if findtype 'Runebook' backpack
+                            targettype 'Runebook' backpack
+                            overhead "::: Recalled Out :::" 15
+                            script 'WaitAndWatch'
+                        endif
                     endif
-                    if firstEntry == 1
-                        walk 'north'
-                        if minedOre == 1
+                else            
+                    if atlist moveList 0 as firstEntry
+                        #overhead xListEntry
+                        #overhead yListEntry
+                        if firstEntry == 1
+                            overhead '::: moving north :::' 55
                             walk 'north'
-                        setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 2
-                        walk 'right'
-                        if minedOre == 1
+                        if firstEntry == 2
+                            overhead '::: moving right :::' 55
                             walk 'right'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 3
-                        walk 'east'
-                        if minedOre == 1
+                        if firstEntry == 3
+                            overhead '::: moving east :::' 55
                             walk 'east'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 4
-                        walk 'down'
-                        if minedOre == 1
+                        if firstEntry == 4
+                            overhead '::: moving down :::' 55
                             walk 'down'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 5
-                        walk 'south'
-                        if minedOre == 1
+                        if firstEntry == 5
+                            overhead '::: moving south :::' 55
                             walk 'south'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 6
-                        walk 'left'
-                        if minedOre == 1
+                        if firstEntry == 6
+                            overhead '::: moving left :::' 55
                             walk 'left'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
-                    endif
-                    if firstEntry == 7
-                        walk 'west'
-                        if minedOre == 1
+                        if firstEntry == 7
+                            overhead '::: moving west :::' 55
                             walk 'west'
-                            setvar minedOre 0
+                            wait movementDelay
                         endif
-                        poplist moveList front
+                        if firstEntry == 8
+                            overhead '::: moving up :::' 55
+                            walk 'up'
+                            wait movementDelay
+                        endif
                     endif
-            else
-                cast "recall"
-                waitfortarget 3000
-                if findtype 'recall rune' backpack
-                    targettype 'recall rune' backpack
-                    overhead "::: Recalled Out :::" 15
-                    script 'WaitAndWatch'
                 endif
-                if findtype 'Runebook' backpack
-                    targettype 'Runebook' backpack
-                    overhead "::: Recalled Out :::" 15
-                    script 'WaitAndWatch'
-                endif
-            endif
+                settimer '_sysmsg' 0
+                settimer '_mining' 0
+                settimer '_checkweight' 0
             endfor
-            #poplist moveList front
-            settimer '_sysmsg' 0
-            settimer '_mining' 0
-            settimer '_checkweight' 0
         else
             script "WaitAndWatch"
         endif
@@ -326,61 +319,51 @@ while timer '_mining' < 4000
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'dull copper'
         overhead '::: dull copper :::' 248
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'iron'
         overhead '::: iron :::' 15
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'copper'
         overhead '::: copper :::' 248
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'bronze'
         overhead '::: bronze :::' 248
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'gold'
         overhead '::: gold :::' 55
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'agapite'
         overhead '::: agapite :::' 55
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'verite'
         overhead '::: verite :::' 33
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'valorite'
         overhead '::: valorite :::' 33
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     elseif insysmsg 'avarite'
         overhead '::: avarite :::' 33
         settimer '_mining' 0
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
-        setvar minedOre 1
     endif
 
     if insysmsg "You loosen"
@@ -388,7 +371,6 @@ while timer '_mining' < 4000
         settimer '_sysmsg' 0
         settimer '_checkweight' 0
         overhead '::: loosened :::'
-        setvar minedOre 1
     endif
 
     if insysmsg 'recently traveled'
@@ -419,9 +401,25 @@ while timer '_mining' < 4000
         settimer '_sysmsg' 0
         settimer '_mining' 0
         #settimer '_checkweight' 0
-    endif 
+    endif
+
+    if insysmsg 'worn out your tool'
+        if rhandempty
+            if not findtype 3718 backpack
+                overhead "::: You are out of pickaxes:::"
+                script "WaitAndWatch"
+            endif
+            if findtype 3718 backpack as pickaxe
+                dclick 'pickaxe'
+                overhead ":::equipped new pickaxe:::"
+                settimer '_mining' 0
+                settimer '_sysmsg' 0
+                wait 1000 #DANGEROUS REMOVE WAIT
+            endif
+        endif    
+    endif
     
-    if timer '_sysmsg' > 3000
+    if timer '_sysmsg' > gumpOrLagTimeout
         overhead "::: GUMP or LAG :::" 33
         overhead "::: Restart Script :::" 55
         script "WaitAndWatch"
