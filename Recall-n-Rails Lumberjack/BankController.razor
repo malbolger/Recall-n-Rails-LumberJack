@@ -1,0 +1,23 @@
+wait 2000
+say bank
+wait 1000
+#restock our regs since we are at the bank
+restock 1
+waitfortarget 3000
+target 'self'
+while queued
+endwhile
+
+while not dead 
+    if findtype 'log%s' backpack as logs
+        dclick logs
+    else
+        if findtype 'board%s' backpack
+            organizer 1
+            while queued
+            endwhile
+        else
+            script 'RecallController'
+        endif
+    endif
+endwhile
