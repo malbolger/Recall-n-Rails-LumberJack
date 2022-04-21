@@ -35,7 +35,7 @@ There are three main files (Harvester, BankController, RecallController) and the
 
 - You will need to record a [macro] of the movements you would like this system to copy. 
 
-- You will need to go to my github at https://github.com/malbolger and get the program "Razor2Rail" follow the onscreen instructions. This program will spit out a rails.txt file in the base directory. 
+- You will need to go to my github at https://github.com/malbolger/Razor2Rail and get the program "Razor2Rail" follow the onscreen instructions. This program will spit out a rails.txt file in the base directory. 
 
 - You will need to copy the entire contents of this file to one of the rail files included that matches the starting point rune of this rail [Runebook_1][Book_1_Rail_1, Book_1_Rail_2, ect] where [Book_1_Rail_1] would be the first rune in the Runebook named [Runebook_1](default)
 
