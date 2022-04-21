@@ -1,0 +1,19 @@
+
+#Name this script WaitAndWatch
+
+if insysmsg "Now tracking:"
+    overhead "::: RED FOUND :::"
+    overhead "::: RECALLING NOW :::"
+    cast "recall"
+    waitfortarget 3000
+    if findtype 'Runebook'
+        targettype 'Runebook' backpack
+    endif
+    overhead "::: Recalled Out :::"
+    break
+    if findtype 'recall rune'
+        targettype 'recall rune' backpack
+    endif
+endif
+clearsysmsg 
+replay
