@@ -13,7 +13,7 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- How many runes in our book are dedicated to harvesting? (line 43)
 		- The name of the Runebooks( I started you off with 2 example runebook names) (line 349 and line 389)
 		- The name of your rail files ([Runebook_1] starts at line 353 and [Runebook_2] at line 293)
-			+If you keep my naming convention for your books and rail files you only need to chage the random number to match the amount of runes in your book!
+			+If you keep my naming convention for your books and rail files you only need to change the random number to match the amount of runes in your book!
 
 - BankController - This file controls turning our logs into boards, statshes them away, and restocks our regs.
 	- What we set in here:
