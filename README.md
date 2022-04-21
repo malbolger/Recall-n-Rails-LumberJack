@@ -26,7 +26,7 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- Movement delay to help with lagging off the rails (line 22)
 		- How long until the whole script times out and goes into " red watch" mode (line 33)
 		- How long until we timeout because of a GUMP or LAG (line 39)
-		- How long before a swing it timed out and cannot perform another action without being told (line 45)
+		- How long before a swing is timed out and cannot perform another action without being told (line 45)
 
 # Razor2Rail
 - You will need to goto the starting point on your desired rail and ">info" yourself in game and write down your position
