@@ -1,0 +1,456 @@
+﻿#########################################
+# █████ █████             ███           #
+#░░███ ░░███             ░░░            #
+# ░░███ ███   █████ ████ ████   ██████  #
+#  ░░█████   ░░███ ░███ ░░███  ███░░███ #
+#   ███░███   ░███ ░███  ░███ ░███ ░███ #
+#  ███ ░░███  ░███ ░███  ░███ ░███ ░███ #
+# █████ █████ ░░███████  █████░░██████  #
+#░░░░░ ░░░░░   ░░░░░███ ░░░░░  ░░░░░░   #
+#              ███ ░███                 #
+#             ░░██████                  #
+#              ░░░░░░                   #
+#########################################
+
+#Randomly cycle through runes and call the coorisponding script for that location
+#We then wait our required "Just traveled" timer and start the script
+if not timerexists 'recentlyTraveled'
+    createtimer 'recentlyTraveled'
+    settimer 'recentlyTraveled' 0
+endif
+#timer to monitor how long before we try to cast our second elemental.
+#it is dangerous to let all elementals despawn.
+if not timerexists '_recastElemental'
+    createtimer '_recastElemental'
+    settimer '_recastElemental' 999999
+endif
+
+#variable to hold information on which
+#random rune and script we will use
+setvar! theScript 0
+
+#do we use tracking skill? 0 for no, 1 for yes.
+setvar! useTracking 1
+
+#do we use summons for protection? 0 for no, 1 for yes.
+setvar! useSummons 1
+
+#var used to decide if we have summoned a new follower
+setvar! canSummon 1
+
+#set this to the number of runes dedicated to harvesting
+#they need to be the first runes in your book
+random 4
+
+#reset our rail lists and get ready for next
+removelist firstRun
+removelist moveList
+removelist xCoord
+removelist yCoord
+overhead "::: script has been reset :::" 77
+
+#variable to let the script know if we failed a restock (not at bank or bank not open)
+setvar! tryedRestock 0
+
+#make sure we have enough regs to do another run! (recall and summons)
+if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpack' > 20 and counttype 'Mandrake Root%s%' 'backpack' > 20 and counttype "Spider's Silk" 'backpack' > 20  
+    #if we don't have an elemental we cast one before leaving.
+    if useSummons == 1
+        while followers < 2
+        if mana > 40 or timer '_recastElemental' > 300000
+                hotkey "Water Elemental"
+            wait 7000
+            endif
+        endwhile
+    settimer '_recastElemental' 0
+    endif
+    #turn on tracking before we leave town
+    if useTracking == 1    
+        skill 'Tracking'
+        waitforgump '4267467659'
+        wait 250
+        gumpresponse 6 
+        wait 1750
+        if not insysmsg 'You will receive'
+            gumpresponse 6
+            wait 1250
+            gumpclose 
+        endif
+    endif
+    
+    #select run to do based on random 
+    #recall and save which script we will do
+    if findtype 'runebook' backpack as book
+        if insysmsg "Random: 1"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 5
+            setvar! theScript 1
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 2"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 11
+            setvar! theScript 2
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 3"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 17
+            setvar! theScript 3
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 4"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 23
+            setvar! theScript 4
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 5"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 29
+            setvar! theScript 5
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 6"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 35
+            setvar! theScript 6
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 7"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 41
+            setvar! theScript 7
+            settimer 'recentlyTraveled' 0
+         elseif insysmsg "Random: 8"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 47
+            setvar theScript 8
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 9"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 53
+            setvar! theScript 9
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 10"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 59
+            setvar! theScript 10
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 11"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 65
+            setvar! theScript 11
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 12"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 71
+            setvar! theScript 12
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 13"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 77
+            setvar! theScript 13
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 14"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 83
+            setvar! theScript 14
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 15"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 89
+            setvar! theScript 15
+            settimer 'recentlyTraveled' 0
+         elseif insysmsg "Random: 16"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 95
+            setvar! theScript 16
+            settimer 'recentlyTraveled' 0
+        endif    
+    endif
+
+    #wait while recently traveled
+    while timer 'recentlyTraveled' < 60000
+        wait 1000
+        #Scan for PK
+        if insysmsg "Now tracking:"
+            overhead "::: RED FOUND :::" 55
+            overhead "::: RECALLING NOW :::" 33
+            cast "recall"
+            waitfortarget 3000
+            if findtype 'Runebook' backpack
+                targettype 'Runebook' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'WaitAndWatch'
+            endif
+            if findtype 'recall rune' backpack
+                targettype 'recall rune' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'WaitAndWatch'
+            endif
+        endif
+        #Give overhead 
+        if timer 'recentlyTraveled' > 59000
+            overhead '1 seconds' 99
+        elseif timer 'recentlyTraveled' > 58000
+            overhead '2 seconds' 2
+        elseif timer 'recentlyTraveled' > 57000
+            overhead '3 seconds' 3
+        elseif timer 'recentlyTraveled' > 56000
+            overhead '4 seconds' 4
+        elseif timer 'recentlyTraveled' > 55000
+            overhead '5 seconds' 5
+        elseif timer 'recentlyTraveled' > 54000
+            overhead '6 seconds' 5
+        elseif timer 'recentlyTraveled' > 53000
+            overhead '7 seconds' 7
+        elseif timer 'recentlyTraveled' > 52000
+            overhead '8 seconds' 8
+        elseif timer 'recentlyTraveled' > 51000
+            overhead '9 seconds' 9
+        elseif timer 'recentlyTraveled' > 50000
+            overhead '10 seconds' 10
+        elseif timer 'recentlyTraveled' > 49000
+            overhead '11 seconds' 11
+        elseif timer 'recentlyTraveled' > 48000
+            overhead '12 seconds' 12
+        elseif timer 'recentlyTraveled' > 47000
+            overhead '13 seconds' 13
+        elseif timer 'recentlyTraveled' > 46000
+            overhead '14 seconds' 14
+        elseif timer 'recentlyTraveled' > 45000
+            overhead '15 seconds' 15
+        elseif timer 'recentlyTraveled' > 44000
+            overhead '16 seconds' 16
+        elseif timer 'recentlyTraveled' > 43000 
+            overhead '17 seconds' 17
+        elseif timer 'recentlyTraveled' > 42000 
+            overhead '18 seconds' 18
+        elseif timer 'recentlyTraveled' > 41000 
+            overhead '19 seconds' 19
+        elseif timer 'recentlyTraveled' > 40000 
+            overhead '20 seconds' 20
+        elseif timer 'recentlyTraveled' > 39000 
+            overhead '21 seconds' 21
+        elseif timer 'recentlyTraveled' > 38000 
+            overhead '22 seconds' 22
+        elseif timer 'recentlyTraveled' > 37000 
+            overhead '23 seconds' 23
+        elseif timer 'recentlyTraveled' > 36000 
+            overhead '24 seconds' 24
+        elseif timer 'recentlyTraveled' > 35000 
+            overhead '25 seconds' 25
+        elseif timer 'recentlyTraveled' > 34000 
+            overhead '26 seconds' 26
+        elseif timer 'recentlyTraveled' > 33000 
+            overhead '27 seconds' 27
+        elseif timer 'recentlyTraveled' > 32000 
+            overhead '28 seconds' 28
+        elseif timer 'recentlyTraveled' > 31000 
+            overhead '29 seconds' 29
+        elseif timer 'recentlyTraveled' > 30000 
+            overhead '30 seconds' 30
+        elseif timer 'recentlyTraveled' > 29000 
+            overhead '31 seconds' 31
+        elseif timer 'recentlyTraveled' > 28000 
+            overhead '32 seconds' 32
+        elseif timer 'recentlyTraveled' > 27000 
+            overhead '33 seconds' 33
+        elseif timer 'recentlyTraveled' > 26000 
+            overhead '34 seconds' 34
+        elseif timer 'recentlyTraveled' > 25000 
+            overhead '35 seconds' 35
+        elseif timer 'recentlyTraveled' > 24000 
+            overhead '36 seconds' 36
+        elseif timer 'recentlyTraveled' > 23000 
+            overhead '37 seconds' 37
+        elseif timer 'recentlyTraveled' > 22000 
+            overhead '38 seconds' 38
+        elseif timer 'recentlyTraveled' > 21000 
+            overhead '39 seconds' 39
+        elseif timer 'recentlyTraveled' > 20000 
+            overhead '40 seconds' 40
+        elseif timer 'recentlyTraveled' > 19000 
+            overhead '41 seconds' 41
+        elseif timer 'recentlyTraveled' > 18000 
+            overhead '42 seconds' 42
+        elseif timer 'recentlyTraveled' > 17000 
+            overhead '43 seconds' 43 
+        elseif timer 'recentlyTraveled' > 16000 
+            overhead '44 seconds' 44
+        elseif timer 'recentlyTraveled' > 15000 
+            overhead '45 seconds' 45
+        elseif timer 'recentlyTraveled' > 14000 
+            overhead '46 seconds' 46
+        elseif timer 'recentlyTraveled' > 13000 
+            overhead '47 seconds' 47
+        elseif timer 'recentlyTraveled' > 12000 
+            overhead '48 seconds' 48
+        elseif timer 'recentlyTraveled' > 11000 
+            overhead '49 seconds' 49
+        elseif timer 'recentlyTraveled' > 10000 
+            overhead '50 seconds' 50
+        elseif timer 'recentlyTraveled' > 9000 
+            overhead '51 seconds' 51
+        elseif timer 'recentlyTraveled' > 8000 
+            overhead '52 seconds' 52 
+        elseif timer 'recentlyTraveled' > 7000 
+            overhead '53 seconds' 53
+        elseif timer 'recentlyTraveled' > 6000 
+            overhead '54 seconds' 54
+        elseif timer 'recentlyTraveled' > 5000 
+            overhead '55 seconds' 55
+            if useSummons == 1
+                say "All Guard Me"
+            endif
+        elseif timer 'recentlyTraveled' > 4000 
+            overhead '56 seconds' 56 
+        elseif timer 'recentlyTraveled' > 3000 
+            overhead '57 seconds' 57
+        elseif timer 'recentlyTraveled' > 2000 
+            overhead '58 seconds' 58
+        elseif timer 'recentlyTraveled' > 1000 
+            overhead '59 seconds' 59
+        endif   
+    endwhile
+
+    #run our script based on the variable we saved earlier
+    #you must name these exactly as you have in your razor list
+    
+    if findtype 'Runebook' as runeBook
+        getlabel runeBook runeBookLabel
+    if "Runebook_1" in runeBookLabel
+            overhead runeBookLabel
+        
+            if theScript == 1
+                script 'Book_2_Rail_1'
+            elseif theScript == 2           
+                script 'Book_2_Rail_2'
+            elseif theScript == 3            
+                script 'Book_2_Rail_3'
+            elseif theScript == 4            
+                script 'Book_2_Rail_4'
+            elseif theScript == 5            
+                script "LJ_5"
+            elseif theScript == 6            
+                script "LJ_6"
+            elseif theScript == 7           
+                script "LJ_7"
+            elseif theScript == 8           
+                script "LJ_8"
+            elseif theScript == 9            
+                  script "LJ_9"
+            elseif theScript == 10            
+                script "LJ_10"
+            elseif theScript == 11           
+                script "LJ_11"
+            elseif theScript == 12            
+                script "LJ_12"
+            elseif theScript == 13            
+                script "LJ_13"
+            elseif theScript == 14            
+                script "LJ_14"
+            elseif theScript == 15            
+                script "LJ_15"
+            elseif theScript == 16            
+                script "LJ_16"
+            endif 
+        endif
+    endif
+    if findtype 'Runebook' as runeBook
+        getlabel runeBook runeBookLabel
+    if "Runebook_2" in runeBookLabel
+            overhead runeBookLabel
+        
+            if theScript == 1
+                script 'Book_1_Rail_1'
+            elseif theScript == 2           
+                script 'Book_1_Rail_2'
+            elseif theScript == 3            
+                script 'Book_1_Rail_3'
+            elseif theScript == 4            
+                script 'Book_1_Rail_4'
+            elseif theScript == 5            
+                script "LJ_5"
+            elseif theScript == 6            
+                script "LJ_6"
+            elseif theScript == 7           
+                script "LJ_7"
+            elseif theScript == 8           
+                script "LJ_8"
+            elseif theScript == 9            
+                  script "LJ_9"
+            elseif theScript == 10            
+                script "LJ_10"
+            elseif theScript == 11           
+                script "LJ_11"
+            elseif theScript == 12            
+                script "LJ_12"
+            elseif theScript == 13            
+                script "LJ_13"
+            elseif theScript == 14            
+                script "LJ_14"
+            elseif theScript == 15            
+                script "LJ_15"
+            elseif theScript == 16            
+                script "LJ_16"
+            endif 
+        endif
+    endif
+else
+    if tryedRestock == 0
+        say 'bank'
+        overhead "::: insufficent regs :::"
+        overhead "::: restocking :::"
+        #restock if our regs are below this threshold
+        restock 1
+        waitfortarget 3000
+        target 'self'
+        while queued
+        endwhile
+        setvar! tryedRestock 1
+        loop
+    else
+        cast "recall"
+        waitfortarget 3000
+        if findtype 'Runebook' backpack
+            targettype 'Runebook' backpack
+        overhead "::: no regs to restock :::" 15
+            script 'WaitAndWatch'
+        endif
+        if findtype 'recall rune' backpack
+            targettype 'recall rune' backpack
+            overhead "::: Recalled Out :::" 15
+            script 'WaitAndWatch'
+        endif
+        setvar! tryedRestock 0
+        script 'BankController'
+    endif
+endif
