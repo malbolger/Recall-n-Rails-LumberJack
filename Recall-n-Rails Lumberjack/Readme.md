@@ -1,7 +1,7 @@
 # Recall-n-Rails Lumberjack
 There are three main files (Harvester, BankController, RecallController) and then Rails that you will record, convert, and place into seperate folders to keep them tidy... RIGHT!?... right?
 
-1)RecallController - This file controls where we go after we use the bank or run from a rail.
+- RecallController - This file controls where we go after we use the bank or run from a rail.
 	- What we set in here:
 		- Do we use tracking? (line 33)
 		- Do we use summons? (line 36)
@@ -10,12 +10,12 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- The name of your rail files ([Runebook_1] starts at line 353 and [Runebook_2] at line 293)
 			+If you keep my naming convention for your books and rail files you only need to chage the random number to match the amount of runes in your book!
 
-2)BankController - This file controls turning our logs into boards, statshes them away, and restocks our regs.
+- BankController - This file controls turning our logs into boards, statshes them away, and restocks our regs.
 	- What we set in here:
 		- The restock agent we use for our regs (line 25)[regs should be in base of bank]
 		- The organizer agent we use to dump boards to our bank (line 36)
 
-3)Harvester - This file controls harvesting, keeping our pet up, looking for reds, timings for movement, timeouts
+- Harvester - This file controls harvesting, keeping our pet up, looking for reds, timings for movement, timeouts
 	- What we set in here:
 		- Do we use automatic movement? (line 17)
 		- Movement delay to help with lagging off the rails (line 22)
