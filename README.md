@@ -39,4 +39,4 @@ There are three main files (Harvester, BankController, RecallController) and the
 
 - You will need to copy the entire contents of this file to one of the rail files included that matches the starting point rune of this rail [Runebook_1][Book_1_Rail_1, Book_1_Rail_2, ect] where [Book_1_Rail_1] would be the first rune in the Runebook named [Runebook_1](default)
 
-From this point you only need to goto your bank, click on the RecallController script and hit play! There will be some hiccups and reds have learnt my frequent spots and some have begin.
+From this point you only need to goto your bank, click on the RecallController script and hit play! There will be some hiccups and reds have learnt my frequent spots and some have begun to stealth kill and blue kill my lumberjacks.
