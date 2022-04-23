@@ -1,6 +1,6 @@
 <div id="header" align="right">
 	<h1>
-  		GRAB IT HERE! <img src="https://thumbs.gfycat.com/PartialRareArkshell-max-1mb.gif" width="100"/>
+  		GRAB IT HERE! <img src="https://s3.envato.com/files/148177745/Still.jpg" width="100"/>
 	</h1>
 </div>
 
