@@ -1,4 +1,4 @@
-#########################################
+                                                  #########################################
 # █████ █████             ███           #
 #░░███ ░░███             ░░░            #
 # ░░███ ███   █████ ████ ████   ██████  #
@@ -19,7 +19,7 @@ setvar! useRails 1
 #
 # Delay before movment attempts
 # increase this if validation of rails fails
-setvar! movementDelay 300
+setvar! movementDelay 350
 #
 #
 # Variable to make our location
@@ -27,23 +27,10 @@ setvar! movementDelay 300
 setvar! xListEntry 0
 setvar! yListEntry 0
 #
-#
-# Max time without a system message before the script
-# considers it a timeout. (default 13000)
-setvar! harvestTimeout 13000
-#
-#
 # Max length of time before the script considers 
 # heavy lag or a captcha is up. (default 12000)
 # must be less than harvestTimeout
-setvar! gumpOrLagTimeout 12000
-#
-#
-# Max time before your tool swing is considered
-# timed out. (default 400)
-# if this is set too high captcha will get you!
-setvar! swingTimeout 400
-#
+setvar! gumpOrLagTimeout 7000
 #
 #---- CHECKS TO SEE IF 'firstRun" list exists ----
 # if the list exists it coninues on with the old rail position
@@ -64,14 +51,6 @@ endif
 if not timerexists '_checkweight'
     createtimer '_checkweight'
     settimer '_checkweight' 99999
-endif
-if not timerexists '_healbandaid'
-    createtimer '_healbandaid'
-    settimer '_healbandaid' 99999
-endif
-if not timerexists '_healmagery'
-    createtimer '_healmagery'
-    settimer '_healmagery' 99999
 endif
 if not timerexists '_equippedToolLast'
     createtimer '_equippedToolLast'
@@ -95,7 +74,10 @@ setvar! isGuarding 0
 settimer '_harvest' 0
 settimer '_checkweight' 0
 
-while timer '_harvest' < harvestTimeout
+setvar handled 1
+
+while not dead
+   #CAST ELEMENTAL
    if 'useSummons' == 1
         #if we don't have an elemental we cast one.
         while followers < 2
@@ -142,8 +124,10 @@ while timer '_harvest' < harvestTimeout
             endif
             settimer '_harvest' 0
         endwhile
-        settimer '_recastElemental' 0
+        
+        #CAST SECOND ELEMENTAL
         if timer '_recastElemental' > 300000
+            overhead 'IN ELE TIMER'
             while summons < 4
                 if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
                     if mana > 40 and timer '_eleCastTimer' > 7000
@@ -185,13 +169,17 @@ while timer '_harvest' < harvestTimeout
                     endif
                 endif  
             endwhile
+            settimer '_recastElemental' 0
         endif
+        
+        #TELL PETS TO GUARD
         if isGuarding == 0
             say "All Guard Me"
             setvar! isGuarding 1
         endif
     endif
     
+    #AXE BROKEN
     if insysmsg 'You broke your axe'
         overhead '::: Your axe is broken :::'
         wait 1000
@@ -217,10 +205,9 @@ while timer '_harvest' < harvestTimeout
         endif
     endif
     
-    #MINE
-    if timer '_harvest' < swingTimeout
-        #clearsysmsg
-        setvar! handled 0
+    #HARVEST
+    if handled == 1
+        #clearsysms
         if lhandempty
             if not findtype 3908 backpack
                 overhead "::: You are out of tools:::"
@@ -251,11 +238,12 @@ while timer '_harvest' < harvestTimeout
             endif                    
         elseif diffweight >= 40
             wait 150
-            #overhead "USING TOOL"
+            overhead "USING TOOL"
             hotkey 'Use item in Hand'
             waitfortarget 6000 
             target 'self'
             wait 250
+            setvar handled 0
         else
             overhead "Too Heavy and Dump Failed"
         endif
@@ -280,11 +268,12 @@ while timer '_harvest' < harvestTimeout
                 script 'BankController'
             endif
         endif        
+        #overhead "RESULTS"
         if insysmsg "You can't mine that"
             overhead '::: node empty :::'
             script "WaitAndWatch"
             setvar! handled 1
-        elseif insysmsg "You do not see any"
+        elseif insysmsg "You do not see"
             overhead "::: node empty :::"
             if useRails == 1
                 #overhead '::: moving :::' 55
@@ -471,6 +460,7 @@ while timer '_harvest' < harvestTimeout
             settimer '_harvest' 0
             settimer '_checkweight' 0
             setvar! handled 1
+            #make sure this is longer than a world save by a bit.
         elseif timer '_harvest' > gumpOrLagTimeout
             overhead "::: Entering Watch Mode :::" 55
             while not insysmsg 'captcha successful'
