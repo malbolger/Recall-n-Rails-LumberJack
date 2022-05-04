@@ -350,46 +350,6 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
             overhead runeBookLabel
         
             if theScript == 1
-                script 'Book_2_Rail_1'
-            elseif theScript == 2           
-                script 'Book_2_Rail_2'
-            elseif theScript == 3            
-                script 'Book_2_Rail_3'
-            elseif theScript == 4            
-                script 'Book_2_Rail_4'
-            elseif theScript == 5            
-                script 'Book_2_Rail_5'
-            elseif theScript == 6            
-                script 'Book_2_Rail_6'
-            elseif theScript == 7           
-                script 'Book_2_Rail_7'
-            elseif theScript == 8           
-                script 'Book_2_Rail_8'
-            elseif theScript == 9            
-                script 'Book_2_Rail_9'
-            elseif theScript == 10            
-                script 'Book_2_Rail_10'
-            elseif theScript == 11           
-                script 'Book_2_Rail_11'
-            elseif theScript == 12            
-                script 'Book_2_Rail_12'
-            elseif theScript == 13            
-                script 'Book_2_Rail_13'
-            elseif theScript == 14            
-                script 'Book_2_Rail_14'
-            elseif theScript == 15            
-                script 'Book_2_Rail_15'
-            elseif theScript == 16            
-                script 'Book_2_Rail_16'
-            endif 
-        endif
-    endif
-    if findtype 'Runebook' as runeBook
-        getlabel runeBook runeBookLabel
-    if "Runebook_2" in runeBookLabel
-            overhead runeBookLabel
-        
-            if theScript == 1
                 script 'Book_1_Rail_1'
             elseif theScript == 2           
                 script 'Book_1_Rail_2'
@@ -421,6 +381,46 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
                 script 'Book_1_Rail_15'
             elseif theScript == 16            
                 script 'Book_1_Rail_16'
+            endif 
+        endif
+    endif
+    if findtype 'Runebook' as runeBook
+        getlabel runeBook runeBookLabel
+    if "Runebook_2" in runeBookLabel
+            overhead runeBookLabel
+        
+            if theScript == 1
+                script 'Book_2_Rail_1'
+            elseif theScript == 2           
+                script 'Book_2_Rail_2'
+            elseif theScript == 3            
+                script 'Book_2_Rail_3'
+            elseif theScript == 4            
+                script 'Book_2_Rail_4'
+            elseif theScript == 5            
+                script 'Book_2_Rail_5'
+            elseif theScript == 6            
+                script 'Book_2_Rail_6'
+            elseif theScript == 7           
+                script 'Book_2_Rail_7'
+            elseif theScript == 8           
+                script 'Book_2_Rail_8'
+            elseif theScript == 9            
+                script 'Book_2_Rail_9'
+            elseif theScript == 10            
+                script 'Book_2_Rail_10'
+            elseif theScript == 11           
+                script 'Book_2_Rail_11'
+            elseif theScript == 12            
+                script 'Book_2_Rail_12'
+            elseif theScript == 13            
+                script 'Book_2_Rail_13'
+            elseif theScript == 14            
+                script 'Book_2_Rail_14'
+            elseif theScript == 15            
+                script 'Book_2_Rail_15'
+            elseif theScript == 16            
+                script 'Book_2_Rail_16'
             endif 
         endif
     endif
