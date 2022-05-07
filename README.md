@@ -39,7 +39,7 @@ There are three main files (Harvester, BankController, RecallController) and the
 # Razor2Rail
 
 - **Rail Creation Video**
-	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/167266722-cae5765e-c830-42ac-aa7f-83e71f90dbd1.jpg)](https://www.youtube.com/watch?v=C45kfbXaQHs "Rail Creation for Razor2Rail")
+	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/167266722-cae5765e-c830-42ac-aa7f-83e71f90dbd1.jpg)](https://www.youtube.com/watch?v=xAIKKuQ62sI "Rail Creation for Razor2Rail")
 
 - **Instructions**
 	- You will need to goto the starting point on your desired rail and ">info" yourself in game and write down your position
