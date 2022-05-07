@@ -37,14 +37,19 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- How long until the whole script times out and goes into " red watch" mode (line 33)
 
 # Razor2Rail
-- You will need to goto the starting point on your desired rail and ">info" yourself in game and write down your position
 
-- You will need to take note of the direction you are facing when you start recording. (Up, North, Right, East, Down, South, Left, West) these are the directions from 12 o'clock clockwise.
+- **Rail Creation Video**
+	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/167266722-cae5765e-c830-42ac-aa7f-83e71f90dbd1.jpg)](https://www.youtube.com/watch?v=C45kfbXaQHs "Rail Creation for Razor2Rail")
 
-- You will need to record a [macro] of the movements you would like this system to copy. 
+- **Instructions**
+	- You will need to goto the starting point on your desired rail and ">info" yourself in game and write down your position
 
-- You will need to go to my github at https://github.com/malbolger/Razor2Rail and get the program "Razor2Rail" follow the onscreen instructions. This program will spit out a rails.txt file in the base directory. 
+	- You will need to take note of the direction you are facing when you start recording. (Up, North, Right, East, Down, South, Left, West) these are the directions from 12 o'clock clockwise.
 
-- You will need to copy the entire contents of this file to one of the rail files included that matches the starting point rune of this rail [Runebook_1][Book_1_Rail_1, Book_1_Rail_2, ect] where [Book_1_Rail_1] would be the first rune in the Runebook named [Runebook_1](default)
+	- You will need to record a [macro] of the movements you would like this system to copy. 
+
+	- You will need to go to my github at https://github.com/malbolger/Razor2Rail and get the program "Razor2Rail" follow the onscreen instructions. This program will spit out a rails.txt file in the base directory. 
+
+	- You will need to copy the entire contents of this file to one of the rail files included that matches the starting point rune of this rail [Runebook_1][Book_1_Rail_1, Book_1_Rail_2, ect] where [Book_1_Rail_1] would be the first rune in the Runebook named [Runebook_1](default)
 
 From this point you only need to goto your bank, click on the RecallController script and hit play! There will be some hiccups and reds have learnt my frequent spots and some have begun to stealth kill and blue kill my lumberjacks.
