@@ -21,8 +21,8 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- Do we use tracking? (line 33)
 		- Do we use summons? (line 36)
 		- How many runes in our book are dedicated to harvesting? (line 43)
-		- The name of the Runebooks( I started you off with 2 example runebook names) (line 349 and line 389)
-		- The name of your rail files ([Runebook_1] starts at line 353 and [Runebook_2] at line 393)
+		- The name of the Runebooks( I started you off with 2 example runebook names) (line 354 and line 394)
+		- The name of your rail files ([Runebook_1] starts at line 358 and [Runebook_2] at line 398)
 		- If you keep my naming convention for your books and rail files you only need to change the random number to match the amount of runes in your book!
 
 - **BankController** - This file controls turning our logs into boards, statshes them away, and restocks our regs.
@@ -35,8 +35,6 @@ There are three main files (Harvester, BankController, RecallController) and the
 		- Do we use automatic movement? (line 17)
 		- Movement delay to help with lagging off the rails (line 22)
 		- How long until the whole script times out and goes into " red watch" mode (line 33)
-		- How long until we timeout because of a GUMP or LAG (line 39)
-		- How long before a swing is timed out and cannot perform another action without being told (line 45)
 
 # Razor2Rail
 - You will need to goto the starting point on your desired rail and ">info" yourself in game and write down your position
