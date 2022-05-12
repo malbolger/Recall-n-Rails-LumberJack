@@ -15,6 +15,7 @@ There are three main files (Harvester, BankController, RecallController) and the
 ## **Important!** ##
 	- Turn off system message filtering in razor! We need these messages for the script!
 	- Do not have other scripts or catagories named the same as these files!
+	- Use a mount or you will need to set movementDelay over 400
 	
 - **RecallController** - This file controls where we go after we use the bank or run from a rail.
 	- What we set in here:
