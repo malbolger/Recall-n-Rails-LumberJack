@@ -32,7 +32,7 @@
 
 - **BankController** - This file controls turning our logs into boards, statshes them away, and restocks our regs.
 	- What we set in here:
-		- The restock agent we use for our regs (line 31)[regs should be in base of bank]
+		- The restock agent we use for our regs (line 31)[regs should be in base of bank and restock 30 or more]
 		- The organizer agent we use to dump boards to our bank (line 42)
 
 - **Harvester** - This file controls harvesting, keeping our pet up, looking for reds, timings for movement, timeouts
