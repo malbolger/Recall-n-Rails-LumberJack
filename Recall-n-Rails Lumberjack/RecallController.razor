@@ -12,6 +12,20 @@
 #              ░░░░░░                   #
 #########################################
 
+# ID's for items used
+########################
+@setvar! Runebook 8901
+@setvar! RecallRune 7956
+@setvar! BlackPearl 3962
+@setvar! Bloodmoss 3963
+@setvar! Garlic 3972
+@setvar! Ginseng 3973
+@setvar! MandrakeRoot 3974
+@setvar! Nightshade 3976
+@setvar! SpidersSilk 3981
+@setvar! SulfurousAsh 3980
+########################
+
 #Randomly cycle through runes and call the coorisponding script for that location
 #We then wait our required "Just traveled" timer and start the script
 if not timerexists 'recentlyTraveled'
@@ -40,7 +54,7 @@ setvar! canSummon 1
 
 #set this to the number of runes dedicated to harvesting
 #they need to be the first runes in your book
-random 4
+random 6
 
 #reset our rail lists and get ready for next
 removelist firstRun
@@ -53,7 +67,8 @@ overhead "::: script has been reset :::" 77
 setvar! tryedRestock 0
 
 #make sure we have enough regs to do another run! (recall and summons)
-if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpack' > 20 and counttype 'Mandrake Root%s%' 'backpack' > 20 and counttype "Spider's Silk" 'backpack' > 20  
+# bloodmoss: 3963 blackpearl: 3962 mandrakeroot: 3966 spiderssilk: 3968
+if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
     #if we don't have an elemental we cast one before leaving.
     if useSummons == 1
         while followers < 2
@@ -64,120 +79,34 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
         endwhile
     settimer '_recastElemental' 0
     endif
+    
     #turn on tracking before we leave town
-    if useTracking == 1    
-        skill 'Tracking'
-        waitforgump '4267467659'
-        wait 500
-        gumpresponse 6 
-        wait 1750
-        if not insysmsg 'You will receive'
-            gumpresponse 6
-            wait 1500
-            gumpclose 
-        endif
+        if useTracking == 1    
+        #clearsysmsg 
+        gumpclose 4267467659
+        while not insysmsg 'What do you wish to track' or insysmsg 'you must wait a few moments' 
+            skill 'Tracking'
+            wait 50
+        endwhile
+        waitforgump 4267467659
+        gumpresponse 6 4267467659
+        waitforgump 4267467659
+        while not insysmsg 'You will receive'
+            gumpresponse 6 4267467659
+            pause 200
+        endwhile
+        gumpclose 4267467659
     endif
     
     #select run to do based on random 
     #recall and save which script we will do
-    if findtype 'runebook' backpack as book
-        if insysmsg "Random: 1"            
+    if findtype Runebook backpack as book
+        if insysmsg "Random: 16"            
             dclick book
             waitforgump any
             wait 250
-            gumpresponse 5
-            setvar! theScript 1
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 2"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 11
-            setvar! theScript 2
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 3"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 17
-            setvar! theScript 3
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 4"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 23
-            setvar! theScript 4
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 5"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 29
-            setvar! theScript 5
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 6"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 35
-            setvar! theScript 6
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 7"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 41
-            setvar! theScript 7
-            settimer 'recentlyTraveled' 0
-         elseif insysmsg "Random: 8"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 47
-            setvar theScript 8
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 9"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 53
-            setvar! theScript 9
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 10"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 59
-            setvar! theScript 10
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 11"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 65
-            setvar! theScript 11
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 12"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 71
-            setvar! theScript 12
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 13"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 77
-            setvar! theScript 13
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 14"            
-            dclick book
-            waitforgump any
-            wait 250
-            gumpresponse 83
-            setvar! theScript 14
+            gumpresponse 95
+            setvar! theScript 16
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 15"            
             dclick book
@@ -186,14 +115,105 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
             gumpresponse 89
             setvar! theScript 15
             settimer 'recentlyTraveled' 0
-         elseif insysmsg "Random: 16"            
+        elseif insysmsg "Random: 14"            
             dclick book
             waitforgump any
             wait 250
-            gumpresponse 95
-            setvar! theScript 16
+            gumpresponse 83
+            setvar! theScript 14
             settimer 'recentlyTraveled' 0
-        endif    
+        elseif insysmsg "Random: 13"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 77
+            setvar! theScript 13
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 12"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 71
+            setvar! theScript 12
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 11"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 65
+            setvar! theScript 11
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 10"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 59
+            setvar! theScript 10
+            settimer 'recentlyTraveled' 0                                            
+        elseif insysmsg "Random: 9"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 53
+            setvar! theScript 9
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 8"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 47
+            setvar theScript 8
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 7"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 41
+            setvar! theScript 7
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 6"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 35
+            setvar! theScript 6
+            settimer 'recentlyTraveled' 0
+         elseif insysmsg "Random: 5"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 29
+            setvar! theScript 5
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 4"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 23
+            setvar! theScript 4
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 3"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 17
+            setvar! theScript 3
+            settimer 'recentlyTraveled' 0
+         elseif insysmsg "Random: 2"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 11
+            setvar! theScript 2
+            settimer 'recentlyTraveled' 0
+        elseif insysmsg "Random: 1"            
+            dclick book
+            waitforgump any
+            wait 250
+            gumpresponse 5
+            setvar! theScript 1
+            settimer 'recentlyTraveled' 0
+        endif     
     endif
 
     #wait while recently traveled
@@ -205,15 +225,17 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
             overhead "::: RECALLING NOW :::" 33
             cast "recall"
             waitfortarget 3000
-            if findtype 'Runebook' backpack
-                targettype 'Runebook' backpack
+            if findtype Runebook backpack
+                targettype Runebook backpack
                 overhead "::: Recalled Out :::" 15
-                script 'WaitAndWatch'
+                wait 1000
+                script 'BankController'
             endif
-            if findtype 'recall rune' backpack
-                targettype 'recall rune' backpack
+            if findtype RecallRune backpack
+                targettype RecallRune backpack
                 overhead "::: Recalled Out :::" 15
-                script 'WaitAndWatch'
+                wait 1000
+                script 'BankController'
             endif
         endif
         #Give overhead 
@@ -330,6 +352,9 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
             if useSummons == 1
                 say "All Guard Me"
             endif
+            if skill 'Hiding' > 0
+                skill 'Hiding'
+            endif
         elseif timer 'recentlyTraveled' > 4000 
             overhead '56 seconds' 56 
         elseif timer 'recentlyTraveled' > 3000 
@@ -344,47 +369,7 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
     #run our script based on the variable we saved earlier
     #you must name these exactly as you have in your razor list
     
-    if findtype 'Runebook' as runeBook
-        getlabel runeBook runeBookLabel
-    if "Runebook_1" in runeBookLabel
-            overhead runeBookLabel
-        
-            if theScript == 1
-                script 'Book_1_Rail_1'
-            elseif theScript == 2           
-                script 'Book_1_Rail_2'
-            elseif theScript == 3            
-                script 'Book_1_Rail_3'
-            elseif theScript == 4            
-                script 'Book_1_Rail_4'
-            elseif theScript == 5            
-                script 'Book_1_Rail_5'
-            elseif theScript == 6            
-                script 'Book_1_Rail_6'
-            elseif theScript == 7           
-                script 'Book_1_Rail_7'
-            elseif theScript == 8           
-                script 'Book_1_Rail_8'
-            elseif theScript == 9            
-                script 'Book_1_Rail_9'
-            elseif theScript == 10            
-                script 'Book_1_Rail_10'
-            elseif theScript == 11           
-                script 'Book_1_Rail_11'
-            elseif theScript == 12            
-                script 'Book_1_Rail_12'
-            elseif theScript == 13            
-                script 'Book_1_Rail_13'
-            elseif theScript == 14            
-                script 'Book_1_Rail_14'
-            elseif theScript == 15            
-                script 'Book_1_Rail_15'
-            elseif theScript == 16            
-                script 'Book_1_Rail_16'
-            endif 
-        endif
-    endif
-    if findtype 'Runebook' as runeBook
+    if findtype Runebook as runeBook
         getlabel runeBook runeBookLabel
     if "Runebook_2" in runeBookLabel
             overhead runeBookLabel
@@ -424,6 +409,46 @@ if counttype 'Blood Moss' 'backpack' > 20 and counttype 'Black Pearl%s%' 'backpa
             endif 
         endif
     endif
+    if findtype Runebook as runeBook
+        getlabel runeBook runeBookLabel
+    if "Runebook_1" in runeBookLabel
+            overhead runeBookLabel
+        
+            if theScript == 1
+                script 'Book_1_Rail_1'
+            elseif theScript == 2           
+                script 'Book_1_Rail_2'
+            elseif theScript == 3            
+                script 'Book_1_Rail_3'
+            elseif theScript == 4            
+                script 'Book_1_Rail_4'
+            elseif theScript == 5            
+                script 'Book_1_Rail_5'
+            elseif theScript == 6            
+                script 'Book_1_Rail_6'
+            elseif theScript == 7           
+                script 'Book_1_Rail_7'
+            elseif theScript == 8           
+                script 'Book_1_Rail_8'
+            elseif theScript == 9            
+                script 'Book_1_Rail_9'
+            elseif theScript == 10            
+                script 'Book_1_Rail_10'
+            elseif theScript == 11           
+                script 'Book_1_Rail_11'
+            elseif theScript == 12            
+                script 'Book_1_Rail_12'
+            elseif theScript == 13            
+                script 'Book_1_Rail_13'
+            elseif theScript == 14            
+                script 'Book_1_Rail_14'
+            elseif theScript == 15            
+                script 'Book_1_Rail_15'
+            elseif theScript == 16            
+                script 'Book_1_Rail_16'
+            endif 
+        endif
+    endif
 else
     if tryedRestock == 0
         say 'bank'
@@ -438,17 +463,16 @@ else
         setvar! tryedRestock 1
         loop
     else
+        overhead "::: no regs to restock :::" 15
         cast "recall"
         waitfortarget 3000
         if findtype 'Runebook' backpack
             targettype 'Runebook' backpack
-        overhead "::: no regs to restock :::" 15
-            script 'WaitAndWatch'
+            script 'BankController'
         endif
-        if findtype 'recall rune' backpack
-            targettype 'recall rune' backpack
-            overhead "::: Recalled Out :::" 15
-            script 'WaitAndWatch'
+        if findtype RecallRune backpack
+            targettype RecallRune backpack
+            script 'BankController'
         endif
         setvar! tryedRestock 0
         script 'BankController'
