@@ -1,4 +1,4 @@
-﻿#########################################
+#########################################
 # █████ █████             ███           #
 #░░███ ░░███             ░░░            #
 # ░░███ ███   █████ ████ ████   ██████  #
@@ -12,12 +12,18 @@
 #              ░░░░░░                   #
 #########################################
 
+# ID's for items used
+########################
+@setvar! Boards 7127
+@setvar! Logs 7133
+########################
+
 #set the restock agent on line 25 to which ever you use
 #to get regs from your bank box
 
 #set the organizer on line 36 to the one you use
 #to dump your boards in the bank (default resotck 1)
-
+#overhead "BANK CONTROLLER"
 wait 2000
 say bank
 wait 1000
@@ -29,10 +35,10 @@ while queued
 endwhile
 
 while not dead 
-    if findtype 'log%s' backpack as logs
+    if findtype Logs backpack as logs
         dclick logs
     else
-        if findtype 'board%s' backpack
+        if findtype Boards backpack
             organizer 1
             while queued
             endwhile
