@@ -1,4 +1,4 @@
-                                                  #########################################
+#########################################
 # █████ █████             ███           #
 #░░███ ░░███             ░░░            #
 # ░░███ ███   █████ ████ ████   ██████  #
@@ -12,6 +12,20 @@
 #              ░░░░░░                   #
 #########################################
 
+# ID's for items used
+########################
+@setvar! Runebook 8901
+@setvar! RecallRune 7956
+@setvar! BlackPearl 3962
+@setvar! Bloodmoss 3963
+@setvar! Garlic 3972
+@setvar! Ginseng 3973
+@setvar! MandrakeRoot 3974
+@setvar! Nightshade 3976
+@setvar! SpidersSilk 3981
+@setvar! SulfurousAsh 3980
+########################
+
 #----USE RAILS?--- (0 if off, 1 is on)
 # If set to 0 you will need to manually move.
 setvar! useRails 1
@@ -19,7 +33,12 @@ setvar! useRails 1
 #
 # Delay before movment attempts
 # increase this if validation of rails fails
-setvar! movementDelay 350
+setvar! movementDelay 250
+#
+#
+# Max movement attemps without getting a location confirmation
+# before we assume we are off the rail and need to pick a new one.
+setvar! movementAttempts 5
 #
 #
 # Variable to make our location
@@ -95,6 +114,7 @@ while not dead
                     overhead "::: RECALLING NOW :::" 33
                     cast "recall"
                     waitfortarget 3000
+                    //Runebook:: name: "Runebook" id: 
                      if findtype 'Runebook' backpack
                         targettype 'Runebook' backpack
                         overhead "::: Recalled Out :::" 15
@@ -126,9 +146,10 @@ while not dead
         endwhile
         
         #CAST SECOND ELEMENTAL
+        //BUGGY NEEDS A FIX
         if timer '_recastElemental' > 300000
-            overhead 'IN ELE TIMER'
-            while summons < 4
+            #overhead 'IN ELE TIMER'
+            while followers < 4
                 if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
                     if mana > 40 and timer '_eleCastTimer' > 7000
                         setvar! isGuarding 0
@@ -238,7 +259,7 @@ while not dead
             endif                    
         elseif diffweight >= 40
             wait 150
-            overhead "USING TOOL"
+            #overhead "USING TOOL"
             hotkey 'Use item in Hand'
             waitfortarget 6000 
             target 'self'
@@ -277,7 +298,7 @@ while not dead
             overhead "::: node empty :::"
             if useRails == 1
                 #overhead '::: moving :::' 55
-                for 12
+                for 8
                     if atlist xCoord 0 as x
                         @setvar! xListEntry x
                     endif
