@@ -23,23 +23,23 @@
 	
 - **RecallController** - This file controls where we go after we use the bank or run from a rail.
 	- What we set in here:
-		- Do we use tracking? (line 33)
-		- Do we use summons? (line 36)
-		- How many runes in our book are dedicated to harvesting? (line 43)
-		- The name of the Runebooks( I started you off with 2 example runebook names) (line 354 and line 394)
-		- The name of your rail files ([Runebook_1] starts at line 358 and [Runebook_2] at line 398)
+		- Do we use tracking? (line 47)
+		- Do we use summons? (line 50)
+		- How many runes in our book are dedicated to harvesting? (line 57)
+		- The name of the Runebooks( I started you off with 2 example runebook names) (line 374 and line 414)
+		- The name of your rail files ([Runebook_1] starts at line 378 and [Runebook_2] at line 418)
 		- If you keep my naming convention for your books and rail files you only need to change the random number to match the amount of runes in your book!
 
 - **BankController** - This file controls turning our logs into boards, statshes them away, and restocks our regs.
 	- What we set in here:
-		- The restock agent we use for our regs (line 25)[regs should be in base of bank]
-		- The organizer agent we use to dump boards to our bank (line 36)
+		- The restock agent we use for our regs (line 31)[regs should be in base of bank]
+		- The organizer agent we use to dump boards to our bank (line 42)
 
 - **Harvester** - This file controls harvesting, keeping our pet up, looking for reds, timings for movement, timeouts
 	- What we set in here:
-		- Do we use automatic movement? (line 17)
-		- Movement delay to help with lagging off the rails (line 22)
-		- How long until the whole script times out and goes into " red watch" mode (line 33)
+		- Do we use automatic movement? (line 31)
+		- Movement delay to help with lagging off the rails (line 36)
+		- How long until the whole script times out and goes into " red watch" mode (line 52)
 
 # Razor2Rail
 
