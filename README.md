@@ -9,9 +9,10 @@
 
 # Recall-n-Rails Lumberjack
 - **Demonstration Video**
-	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/168732442-1fcbbf44-3287-498e-86dd-0aa43a5aa1cd.png)](https://www.youtube.com/watch?v=_5iBAGw_LBE "Recall -n- Rails Demo")
+	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/168937498-c38908ff-ac6e-4f6d-9456-3cbf74fd59a4.png)](https://www.youtube.com/watch?v=_5iBAGw_LBE "Recall -n- Rails Demo")
 	 
 ## **Important!** ##
+	- Remember the direction you are facing when you hit [record] on your macro, input this in Razor2Rail!
 	- Turn off system message filtering in razor! We need these messages for the script!
 	- Do not have other scripts or catagories named the same as these files!
 	- Use a mount or you will need to set movementDelay over 400
