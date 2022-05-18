@@ -5,16 +5,12 @@
 </div>
 
 # Recall-n-Rails-System   
-- Full Auto Miner does work but does not make use of a runebook or summons. I will try to update to the new system soon!
-- Recall-n-Rails Lumberjack is the newest edition of my script. Please let me know when you find bugs! (there will be plenty!)
 - You will make your rails with Razor2Rail https://github.com/malbolger/Razor2Rail see video below for a guide on how I do it.
 
 # Recall-n-Rails Lumberjack
 - **Demonstration Video**
 	- [![IMAGE ALT TEXT](https://user-images.githubusercontent.com/11452884/168732442-1fcbbf44-3287-498e-86dd-0aa43a5aa1cd.png)](https://www.youtube.com/watch?v=_5iBAGw_LBE "Recall -n- Rails Demo")
 	 
-- There are three main files (Harvester, BankController, RecallController) and then Rails that you will record, convert, and place into seperate folders to keep them tidy... RIGHT!?... right?
-
 ## **Important!** ##
 	- Turn off system message filtering in razor! We need these messages for the script!
 	- Do not have other scripts or catagories named the same as these files!
