@@ -17,6 +17,7 @@
 	- Do not have other scripts or catagories named the same as these files!
 	- Use a mount or you will need to set movementDelay over 400
 	- Set your bank rune in your runebook as your default rune
+	- Make sure your Runebook is named 'Runebook_1' or 'Runebook_2' depending on which rails your using
 	
 - **RecallController** - This file controls where we go after we use the bank or run from a rail.
 	- What we set in here:
