@@ -6,6 +6,7 @@
 
 # Recall-n-Rails-System   
 - You will make your rails with Razor2Rail https://github.com/malbolger/Razor2Rail see video below for a guide on how I do it.
+- No support for the Recall-n-Rails Miner yet! Lots still being reworked!
 
 # Recall-n-Rails Lumberjack
 - **Demonstration Video**
