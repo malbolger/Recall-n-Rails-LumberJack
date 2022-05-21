@@ -1,0 +1,521 @@
+#########################################
+# █████ █████             ███           #
+#░░███ ░░███             ░░░            #
+# ░░███ ███   █████ ████ ████   ██████  #
+#  ░░█████   ░░███ ░███ ░░███  ███░░███ #
+#   ███░███   ░███ ░███  ░███ ░███ ░███ #
+#  ███ ░░███  ░███ ░███  ░███ ░███ ░███ #
+# █████ █████ ░░███████  █████░░██████  #
+#░░░░░ ░░░░░   ░░░░░███ ░░░░░  ░░░░░░   #
+#              ███ ░███                 #
+#             ░░██████                  #
+#              ░░░░░░                   #
+#########################################
+
+# ID's for items used
+########################
+@setvar! Runebook 8901
+@setvar! RecallRune 7956
+@setvar! BlackPearl 3962
+@setvar! Bloodmoss 3963
+@setvar! Garlic 3972
+@setvar! Ginseng 3973
+@setvar! MandrakeRoot 3974
+@setvar! Nightshade 3976
+@setvar! SpidersSilk 3981
+@setvar! SulfurousAsh 3980
+########################
+
+overhead "::: harvester :::"
+
+if not timerexists '_harvest'
+    createtimer '_harvest'
+    settimer '_harvest' 99999
+endif
+if not timerexists '_checkweight'
+    createtimer '_checkweight'
+    settimer '_checkweight' 99999
+endif
+if not timerexists '_equippedToolLast'
+    createtimer '_equippedToolLast'
+    settimer '_equippedToolLast' 99999
+endif
+if not timerexists '_recastElemental'
+    createtimer '_recastElemental'
+    settimer '_recastElemental' 999999
+endif
+if not timerexists '_eleCastTimer'
+    createtimer '_eleCasttimer'
+    settimer '_eleCastTimer' 99999
+endif
+if not varexist packyDumps
+    setvar! packyDumps 0
+endif
+
+setvar! isGuarding 0
+
+#Set timers initially to get into while loop.
+settimer '_harvest' 0
+settimer '_checkweight' 0
+setvar! handled 1
+
+while not dead
+   #CAST ELEMENTAL
+   if 'useSummons' == 1
+        #if we don't have an elemental we cast one.
+        while followers < 2
+            if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
+                if mana > 40
+                    if timer '_eleCastTimer' > 7000
+                        setvar! isGuarding 0
+                        hotkey "Water Elemental"
+                        settimer '_eleCastTimer' 0
+                        settimer '_harvest' 0
+                    endif
+                endif
+                if insysmsg "Now tracking:"
+                    overhead "::: RED FOUND :::" 55
+                    overhead "::: RECALLING NOW :::" 33
+                    cast "recall"
+                    waitfortarget 3000
+                    //Runebook:: name: "Runebook" id: 4
+                        if findtype 'Runebook' backpack
+                            targettype 'Runebook' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                endif
+            else
+                overhead "::: out of regs :::" 44
+                overhead "::: recalling now :::" 44
+                cast "recall"
+                waitfortarget 3000
+                 if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'M_BankController'
+                endif
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'M_BankController'
+                endif
+            endif
+            settimer '_harvest' 0
+        endwhile
+        
+        #CAST SECOND ELEMENTAL
+        if timer '_recastElemental' > 300000
+            overhead 'IN ELE TIMER'
+            while followers < 4
+                if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
+                    if mana > 40 and timer '_eleCastTimer' > 7000
+                        setvar! isGuarding 0
+                        hotkey "Water Elemental"
+                        settimer '_eleCastTimer' 0
+                        settimer '_harvest' 0
+                     endif
+                     if insysmsg "Now tracking:"
+                        overhead "::: RED FOUND :::" 55
+                        overhead "::: RECALLING NOW :::" 33
+                        cast "recall"
+                        waitfortarget 3000
+                         if findtype 'Runebook' backpack
+                            targettype 'Runebook' backpack
+                            overhead "::: Recalled Out :::" 15
+                            script 'M_BankController'
+                        endif
+                        if findtype 'recall rune' backpack
+                            targettype 'recall rune' backpack
+                            overhead "::: Recalled Out :::" 15
+                            script 'M_BankController'
+                        endif
+                    endif
+                else
+                    overhead "::: out of regs :::" 44
+                    overhead "::: recalling now :::" 44
+                    cast "recall"
+                    waitfortarget 3000
+                     if findtype 'Runebook' backpack
+                        targettype 'Runebook' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                endif  
+            endwhile
+            settimer '_recastElemental' 0
+        endif
+        
+        #TELL PETS TO GUARD
+        if isGuarding == 0
+            say "All Guard Me"
+            setvar! isGuarding 1
+        endif
+    endif
+    
+    #PICK BROKEN
+    if insysmsg 'worn out your tool'
+        overhead '::: You broke your pickaxe :::'
+        wait 1000
+        if rhandempty
+            setvar! handled 1
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+        endif
+    endif 
+     
+    #PACKIE 
+    if diffweight <= 40
+        #switch to new packie if last is full
+        if packieDumps == 4
+            #remove from empty list and put on full list
+            if atlist emptyPackieList 0 as packie                
+                poplist emptyPackieList 'front'
+                pushlist fullPackieList packie 'back'
+                setvar packieDumps 0
+            endif
+        endif
+
+        #DUMP TO PACKIE
+        if list emptyPackieList > 0
+            overhead "1"
+            if atlist emptyPackieList 0 as thePack
+                overhead "2"
+                if packieDumps == 0
+                    overhead "::: setting organizer :::"
+                    organizer packDumpAgent 'set'
+                    waitfortarget 2000
+                    target thePack
+                    wait 1000
+                    overhead "::: First Dump on pack animal :::" 33
+                    organizer packDumpAgent
+                    setvar! packieDumps 1
+                else           
+                    if packieDumps == 3
+                        overhead "::: Fourth Dump on pack animal :::" 33
+                        organizer packDumpAgent
+                        setvar! packieDumps 4
+                    endif
+                    if packieDumps == 2
+                        overhead "::: Third Dump on pack animal :::" 33
+                        organizer packDumpAgent
+                        setvar! packieDumps 3
+                    endif
+                    if packieDumps == 1
+                        overhead "::: Second Dump on pack animal :::" 33
+                        organizer packDumpAgent
+                        setvar! packieDumps 2
+                    endif
+                endif
+            endif
+        else
+            #Out of Packies
+            overhead "::: PACKIES FULL :::" 55
+            overhead "::: RECALLING NOW :::" 33
+            cast "recall"
+            waitfortarget 3000
+            if findtype 'recall rune' backpack
+                targettype 'recall rune' backpack
+                overhead "::: Recalled Out :::"
+                script 'M_BankController'
+            endif
+            if findtype 'Runebook' backpack
+                targettype 'Runebook' backpack
+                overhead "::: Recalled Out :::"
+                script 'M_BankController'
+            endif
+        endif
+        settimer '_checkweight' 1000
+        settimer '_harvest' 0     
+    endif
+    
+    #HARVEST
+    if handled == 1
+        #clearsysms
+        if rhandempty
+            if not findtype 3718 backpack
+                overhead "::: You are out of tools:::"
+                settimer '_harvest' 2000
+                cast "recall"
+                waitfortarget 3000                
+                if findtype 'Runebook' backpack
+                    targettype 'Runebook' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'M_BankController'
+                endif
+                if findtype 'recall rune' backpack
+                    targettype 'recall rune' backpack
+                    overhead "::: Recalled Out :::" 15
+                    script 'M_BankController'
+                endif
+                
+            endif
+            if findtype 3718 backpack as tool
+                if timer '_equippedToolLast' > 3000
+                    dclick 'tool'
+                    overhead ":::equipped new tool:::"
+                    settimer '_equippedToolLast' 0
+                    wait 1000
+                    settimer '_harvest' 0
+                    setvar!  handled 1
+                endif
+            endif                    
+        elseif diffweight >= 40
+            wait 150
+            overhead "USING TOOL"
+            hotkey 'Use item in Hand'
+            wait 250
+            setvar! handled 0
+        else
+            # overhead "Too Heavy and Dump Failed"
+        endif
+    endif
+    
+    #HANDLE RESULTS
+    while handled == 0
+        #Check for PK while in this loop!
+        if insysmsg "Now tracking:"
+            overhead "::: RED FOUND :::" 55
+            overhead "::: RECALLING NOW :::" 33
+            cast "recall"
+            waitfortarget 3000
+             if findtype 'Runebook' backpack
+                targettype 'Runebook' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'M_BankController'
+            endif
+            if findtype 'recall rune' backpack
+                targettype 'recall rune' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'M_BankController'
+            endif
+        endif        
+        #overhead "RESULTS"
+        if insysmsg "You do not see"
+            overhead "::: node empty :::"
+            if useRails == 1
+                #overhead '::: moving :::' 55
+                for 8
+                    if atlist xCoord 0 as x
+                        @setvar! xListEntry x
+                    endif
+                    if atlist yCoord 0 as y
+                        @setvar! yListEntry y
+                    endif       
+                    if position xListEntry yListEntry              
+                        overhead 'at location'                                   
+                        if list moveList > 0             
+                            poplist moveList 'front'
+                            poplist xCoord 'front'
+                            poplist yCoord 'front'
+                        else
+                            overhead "::: Back to town rail completed :::"
+                            cast "recall"
+                            waitfortarget 3000
+                            if findtype 'Runebook' backpack
+                                targettype 'Runebook' backpack
+                                overhead "::: Recalled Out :::" 15
+                                script 'M_BankController'
+                            endif
+                            if findtype 'recall rune' backpack
+                                targettype 'recall rune' backpack
+                                overhead "::: Recalled Out :::" 15
+                                script 'M_BankController'
+                            endif                         
+                        endif
+                    else            
+                        if atlist moveList 0 as firstEntry
+                            #overhead xListEntry
+                            #overhead yListEntry
+                            if firstEntry == 1
+                                overhead '::: moving north :::' 55
+                                walk 'north'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 2
+                                overhead '::: moving right :::' 55
+                                walk 'right'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 3
+                                overhead '::: moving east :::' 55
+                                walk 'east'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 4
+                                overhead '::: moving down :::' 55
+                                walk 'down'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 5
+                                overhead '::: moving south :::' 55
+                                walk 'south'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 6
+                                overhead '::: moving left :::' 55
+                                walk 'left'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 7
+                                overhead '::: moving west :::' 55
+                                walk 'west'
+                                wait movementDelay
+                            endif
+                            if firstEntry == 8
+                                overhead '::: moving up :::' 55
+                                walk 'up'
+                                wait movementDelay
+                            endif
+                        endif
+                    endif
+                    settimer '_harvest' 0
+                    settimer '_checkweight' 0
+                    setvar! handled 1
+                endfor
+            else
+                script "WaitAndWatch"
+            endif
+        elseif insysmsg 'dull copper'
+            overhead '::: dull copper :::' 248
+            settimer '_harvest' 0
+            settimer '_checkweight' 0          
+            setvar! handled 1
+        elseif insysmsg 'Shadow'
+            overhead '::: shadow :::' 15
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+        elseif insysmsg 'Copper'
+            overhead '::: copper :::' 248
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+        elseif insysmsg 'Bronze'
+            overhead '::: bronze :::' 248
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+        elseif insysmsg 'Gold'
+            overhead '::: gold :::' 55
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg 'Agapite'
+                overhead '::: agapite :::' 55
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg 'Verite'
+                overhead '::: verite :::' 33
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg 'Valorite'
+                overhead '::: valorite :::' 33
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg 'Avarite'
+                overhead '::: avarite :::' 33
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg 'iron'
+                overhead '::: iron :::' 193
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            elseif insysmsg "You loosen"
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            overhead '::: loosened :::'
+        elseif insysmsg 'recently traveled'
+            overhead '::: recently traveled :::'
+            script 'M_BankController'
+        elseif insysmsg 'Organize Agent queued'
+            overhead '::: Organizer Working :::' 55
+            while queued
+                endwhile
+            pause 2000
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+        elseif insysmsg 'World is saving, please wait'
+            overhead '::: Waiting for Save :::'
+            for 5
+                wait 1000
+                settimer '_harvest' 0
+                settimer 'checkweight' 0
+            endfor
+        elseif insysmsg 'Harvesting is not allowed in this area'
+            overhead '::: You cannot gather in town :::' 44
+            overhead "::: RECALLING NOW :::" 44
+            cast "recall"
+            waitfortarget 3000
+            if findtype 'Runebook' backpack
+                targettype 'Runebook' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'M_BankController'
+            endif
+            if findtype 'recall rune' backpack
+                targettype 'recall rune' backpack
+                overhead "::: Recalled Out :::" 15
+                script 'M_BankController'
+            endif
+            #settimer '_harvest' 0
+            #settimer '_checkweight' 0
+            #setvar! handled 1
+        elseif insysmsg 'worn out your tool'
+            overhead '::: You broke your pickaxe :::'
+            if rhandempty
+                wait 2000
+                setvar! handled 1
+                settimer '_harvest' 0
+                settimer '_checkweight' 0
+            endif
+        elseif insysmsg 'equipped for any serious chopping'
+            //TODO
+            overhead '::: Whoops where did your axe go!? :::'
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+            setvar! handled 1
+            #make sure this is longer than a world save by a bit.
+        elseif timer '_harvest' > gumpOrLagTimeout
+            overhead "::: Entering Watch Mode :::" 55
+            while not insysmsg 'captcha successful'
+                #Check for PK while in this loop!
+                if insysmsg "Now tracking:"
+                    overhead "::: RED FOUND :::" 55
+                    overhead "::: RECALLING NOW :::" 33
+                    cast "recall"
+                    waitfortarget 3000
+                    if findtype 'Runebook' backpack
+                        targettype 'Runebook' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                    if findtype 'recall rune' backpack
+                        targettype 'recall rune' backpack
+                        overhead "::: Recalled Out :::" 15
+                        script 'M_BankController'
+                    endif
+                endif
+            endwhile
+            setvar! handled 1
+            settimer '_harvest' 0
+            settimer '_checkweight' 0
+        endif
+    endwhile
+endwhile   
